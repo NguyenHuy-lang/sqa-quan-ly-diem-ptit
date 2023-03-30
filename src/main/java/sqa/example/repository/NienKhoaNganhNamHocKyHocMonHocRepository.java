@@ -22,5 +22,8 @@ public interface NienKhoaNganhNamHocKyHocMonHocRepository extends JpaRepository<
             (@Param("nien_khoa_nganh_nam_hoc_ky_hoc_id") Integer nien_khoa_nganh_nam_hoc_ky_hoc_id,
              @Param("mon_hoc_id") Integer mon_hoc_id);
 
-
+    @Query(value = "SELECT * FROM tbl_nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc nknnhkhmh " +
+				   "WHERE nknnhkhmh.mon_hoc_id = :mon_hoc_id", nativeQuery = true)
+	List<NienKhoaNganhNamHocKyHocMonHoc> getNienKhoaNganhNamHocKyHocMonHocByMonHoc
+			(@Param("mon_hoc_id") Integer mon_hoc_id);
 }
