@@ -1,0 +1,7 @@
+CREATE TABLE tbl_thang_diem (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    _from DECIMAL (12,3) NOT NULL,
+    _to DECIMAL (12, 3) NOT NULL,
+    diem_chu VARCHAR(5) NOT NULL,
+    diem_he_4 DECIMAL (12, 3) NOT NULL
+)
