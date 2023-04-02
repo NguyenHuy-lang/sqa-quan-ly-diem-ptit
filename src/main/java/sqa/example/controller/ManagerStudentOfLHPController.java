@@ -1,6 +1,7 @@
 package sqa.example.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.naming.TransactionRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/admin/")
+@Log4j2
+@CrossOrigin
 public class ManagerStudentOfLHPController {
     private final NganhRepository nganhRepository;
     private final NamHocRepository namHocRepository;
