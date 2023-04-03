@@ -14,62 +14,42 @@ import java.util.*;
 public class ThangDiemConfigurationController {
     private final ThangDiemRepository thangDiemRepository;
 
-	// http://localhost:8080/api/v1/cau-hinh/thang-diems
-    @GetMapping("thang-diems")
-    public ResponseEntity<List<ThangDiem>> getAll() 
+    @GetMapping("/thang-diems")
+    public ResponseEntity<List<ThangDiem>> all() 
 	{
         return ResponseEntity.ok(thangDiemRepository.findAll());
     }
 	
-	// http://localhost:8080/api/v1/cau-hinh/thang-diems/A+
-	@GetMapping("thang-diems/{thang-diem-name}")
-    public ResponseEntity<ThangDiem> getByName(@PathVariable(value = "thang-diem-name") String thang_diem_name) 
+	@GetMapping("/thang-diems/{id}")
+    public ResponseEntity<ThangDiem> one(@PathVariable("id") Integer id) 
 	{
-        return ResponseEntity.ok(thangDiemRepository.getThangDiemByName(thang_diem_name));
+        return ResponseEntity.ok(thangDiemRepository.findById(id).get());
     }
-	
-	// http://localhost:8080/api/v1/cau-hinh/thang-diems/G/them-moi?from=0.4&to=0.2&diemHe4=0.222
-	@PostMapping("thang-diems/{thang-diem-name}/them-moi")
-	public ResponseEntity<ThangDiem> create(@PathVariable(value = "thang-diem-name") String thang_diem_name,
-											@RequestParam(value = "from", required = true) Double from,
-											@RequestParam(value = "to", required = true) Double to,
-											@RequestParam(value = "diemHe4", required = true) Double diem_he_4) 
+
+	@PostMapping("/thang-diems")
+	public ResponseEntity<ThangDiem> create(@RequestBody ThangDiem thangDiem) 
 	{
-		ThangDiem thangDiem = new ThangDiem();
-		if (thangDiemRepository.getThangDiemByName(thang_diem_name) != null)
+		if (thangDiemRepository.getThangDiemByName(thangDiem.getDiemChu()) != null)
 			return ResponseEntity.ok(null);
-		
-		thangDiem.setDiemChu(thang_diem_name);
-		thangDiem.setFrom(from);
-		thangDiem.setTo(to);
-		thangDiem.setDiemHe4(diem_he_4);
 		
 		return ResponseEntity.ok(thangDiemRepository.save(thangDiem));
-	}	
+	}
 	
-	// http://localhost:8080/api/v1/cau-hinh/thang-diems/B+/chinh-sua?from=0.0&to=3.9&diemHe4=0.1
-	@PutMapping("thang-diems/{thang-diem-name}/chinh-sua")
-    public ResponseEntity<ThangDiem> update(@PathVariable(value = "thang-diem-name") String thang_diem_name,
-											@RequestParam(value = "from", required = true) Double from,
-											@RequestParam(value = "to", required = true) Double to,
-											@RequestParam(value = "diemHe4", required = true) Double diem_he_4) 
+	@PutMapping("/thang-diems")
+    public ResponseEntity<ThangDiem> update(@RequestBody ThangDiem thangDiem) 
 	{
-        var thangDiem = thangDiemRepository.getThangDiemByName(thang_diem_name);	
-		if (thangDiem == null)
+		return thangDiemRepository.findById(thangDiem.getId()).map(mh -> {
+			return ResponseEntity.ok(thangDiemRepository.save(thangDiem));
+		})
+		.orElseGet(() -> {
 			return ResponseEntity.ok(null);
-		
-		thangDiem.setFrom(from);
-		thangDiem.setTo(to);
-		thangDiem.setDiemHe4(diem_he_4);
-		thangDiemRepository.save(thangDiem);
-		return ResponseEntity.ok(thangDiem);
+		});
     }
 	
-	// http://localhost:8080/api/v1/cau-hinh/thang-diems/G/xoa
-	@DeleteMapping("thang-diems/{thang-diem-name}/xoa")
-	public ResponseEntity<Boolean> delete(@PathVariable(value = "thang-diem-name") String thang_diem_name) 
+	@DeleteMapping("/thang-diems/{id}")
+	public ResponseEntity<Boolean> delete(@PathVariable("id") Integer id) 
 	{
-		var thangDiem = thangDiemRepository.getThangDiemByName(thang_diem_name);
+		var thangDiem = thangDiemRepository.findById(id).get();
 		if (thangDiem == null)
 			return ResponseEntity.ok(false);
 		
