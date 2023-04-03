@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +30,9 @@ import sqa.example.repository.NienKhoaNganhNamHocKyHocRepository;
 import sqa.example.repository.NienKhoaNganhRepository;
 import sqa.example.repository.NienKhoaRepository;
 
-/* Test http.
-http://localhost:8080/api/v1/thong-ke-truot/nam-hocs/2017-2018/ky-hocs/hoc ky 1/nien-khoas/d19/nganhs/cong nghe thong tin/mon-hocs/nhap mon cong nghe phan mem/danh-sach
-Mau tra ve
+/*
+http://localhost:8080/api/v1/thong-ke-truot/nam-hocs/2017-2018/ky-hocs/hoc ky 1/nien-khoas/d19/nganhs/cong nghe thong tin/mon-hocs/nhap mon cong nghe phan mem
+
 {
     "0": {
         "so hoc vien"			: "20",
@@ -142,7 +141,7 @@ public class FailureRateStatisticsController
         return ResponseEntity.ok(monHocSet.stream().toList());
     }
 	
-	@GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hoc-name}/nien-khoas/{nien-khoa-name}/nganhs/{nganh-name}/mon-hocs/{mon-hoc-name}/danh-sach")
+	@GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hoc-name}/nien-khoas/{nien-khoa-name}/nganhs/{nganh-name}/mon-hocs/{mon-hoc-name}")
     public ResponseEntity<List<Map>> getFailureRateOfMonHoc(@PathVariable(value = "nam-hoc-name") String nam_hoc_name ,
 																   @PathVariable(value = "ky-hoc-name") String ky_hoc_name,
 																   @PathVariable(value = "nien-khoa-name") String nien_khoa_name,
