@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Entity(name="tbl_nguoi_dung")
-public class NguoiDung implements Serializable {
+public class NguoiDung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;

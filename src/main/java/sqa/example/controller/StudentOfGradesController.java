@@ -95,6 +95,8 @@ public class StudentOfGradesController {
             MonHoc monHoc = lopHocPhan.getNienKhoaNganhNamHocKyHocMonHoc().getMonHoc();
             setKetQua(ketQua, monHoc);
             if (ketQua != null) {
+                ketQua.setNameSinhVien(ketQua.getSinhVien().getNguoiDung().getName());
+                ketQua.setMaSinhVien(ketQua.getSinhVien().getMaSinhVien());
                 return ResponseEntity.ok().body(ketQua);
             }
         }
@@ -103,7 +105,7 @@ public class StudentOfGradesController {
     }
 
     public Integer getUserId() {
-        return 1;
+        return 3;
     }
     public List<NienKhoaNganhNamHocKyHocMonHoc> getNienKhoaNganhNamHocKyHocMonHoc(Integer nam_hoc_id, Integer ky_hoc_id) {
         Integer id = getUserId();

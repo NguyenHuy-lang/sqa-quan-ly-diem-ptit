@@ -13,6 +13,7 @@ class PtitApplicationTests {
 	@Test
 	void twoPlusShouldEqualsFour() {
 		assertEquals(4, 2 + 2);
+		assertNull(null);
 	}
 
 }

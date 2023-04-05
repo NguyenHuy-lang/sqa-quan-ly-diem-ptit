@@ -12,7 +12,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_sinh_vien")
-public class SinhVien implements Serializable{
+@Builder
+public class SinhVien{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,5 +25,6 @@ public class SinhVien implements Serializable{
     @ManyToOne(cascade={CascadeType.MERGE})
     @JoinColumn(name = "nien_khoa_nganh_id")
     private NienKhoaNganh nienKhoaNganh;
+
 
 }

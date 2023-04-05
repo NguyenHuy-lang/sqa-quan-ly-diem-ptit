@@ -40,6 +40,7 @@ public class ManagerStudentOfLHPController {
     private final ThangDiemRepository thangDiemRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagerStudentOfLHPController.class);
+
     @GetMapping("nam-hocs")
     public ResponseEntity<List<NamHoc>> getAllNamhoc() {
         LOGGER.info("GET ALL NAM HOC");
@@ -52,8 +53,9 @@ public class ManagerStudentOfLHPController {
         Integer nam_hoc_id = namHocService.getIdNamHocByName((nam_hoc_name));
         return ResponseEntity.ok(namHocKyHocRepository.getNamHocKyHoc(nam_hoc_id));
     }
+
     @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas")
-    public ResponseEntity<List<NienKhoa>> getAllNienKhoa(@PathVariable(value = "nam-hoc-name") String nam_hoc_name ,
+    public ResponseEntity<List<NienKhoa>> getAllNienKhoa(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
                                                          @PathVariable(value = "ky-hocs-name") String ky_hoc_names) {
         Integer ky_hoc_id = kyHocService.getIdKyHocByNameKyHoc(standardized(ky_hoc_names));
         Integer nam_hoc_id = namHocService.getIdNamHocByName((nam_hoc_name));
@@ -75,6 +77,7 @@ public class ManagerStudentOfLHPController {
         System.out.println(nienKhoaList.stream().toList());
         return ResponseEntity.ok().body(nienKhoaList.stream().toList());
     }
+
     @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh")
     public ResponseEntity<List<Nganh>> getAllNganh(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
                                                    @PathVariable(value = "ky-hocs-name") String ky_hoc_names,
@@ -119,13 +122,14 @@ public class ManagerStudentOfLHPController {
                 getNienKhoaNganhNamHocKyHoc(namHocKyHoc.getId(), nienKhoaNganh.getId());
         List<NienKhoaNganhNamHocKyHocMonHoc> nienKhoaNganhNamHocKyHocMonHocList =
                 nienKhoaNganhNamHocKyHocMonHocRepository.
-                getNienKhoaNganhNamHocKyHocMonHoc(nienKhoaNganhNamHocKyHoc.getId());
+                        getNienKhoaNganhNamHocKyHocMonHoc(nienKhoaNganhNamHocKyHoc.getId());
         List<MonHoc> monHocList = new ArrayList<>();
         for (NienKhoaNganhNamHocKyHocMonHoc nienKhoaNganhNamHocKyHocMonHoc : nienKhoaNganhNamHocKyHocMonHocList) {
             monHocList.add(nienKhoaNganhNamHocKyHocMonHoc.getMonHoc());
         }
         return ResponseEntity.ok().body(monHocList);
     }
+
     @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/{nganh-name}/mon-hocs/{mon-hoc-name}/lhps")
     ResponseEntity<List<LopHocPhan>> getAllLhpOfMonHoc(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
                                                        @PathVariable(value = "ky-hocs-name") String ky_hoc_names,
@@ -151,6 +155,7 @@ public class ManagerStudentOfLHPController {
 
         return ResponseEntity.ok().body(lopHocPhanList);
     }
+
     @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/{nganh-name}/mon-hocs/" +
             "{mon-hoc-name}/lhps/{lhp-id}/sinh-viens")
     ResponseEntity<List<SinhVien>> getAllSinhVienOfLhp(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
@@ -166,28 +171,30 @@ public class ManagerStudentOfLHPController {
         List<SinhVien> sinhVienList = ketQuaList.stream().map(ketQua -> ketQua.getSinhVien()).collect(Collectors.toList());
         return ResponseEntity.ok().body(sinhVienList);
     }
+
     @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/{nganh-name}/mon-hocs/{mon-hoc-name}/lhps/{lhp-id}/ket-quas")
     ResponseEntity<List<KetQua>> getAllKetQuaSinhVienOfLhp(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
-                                                       @PathVariable(value = "ky-hocs-name") String ky_hoc_names,
-                                                       @PathVariable(value = "nien-khoa-name") String nien_khoa_name,
-                                                       @PathVariable(value = "nganh-name") String nganh_name,
-                                                       @PathVariable(value = "mon-hoc-name") String mon_hoc_name,
-                                                       @PathVariable(value = "lhp-id") Integer lhp_id
+                                                           @PathVariable(value = "ky-hocs-name") String ky_hoc_names,
+                                                           @PathVariable(value = "nien-khoa-name") String nien_khoa_name,
+                                                           @PathVariable(value = "nganh-name") String nganh_name,
+                                                           @PathVariable(value = "mon-hoc-name") String mon_hoc_name,
+                                                           @PathVariable(value = "lhp-id") Integer lhp_id
 
     ) {
         LopHocPhan lopHocPhan = lopHocPhanRepository.getById(lhp_id);
         List<KetQua> ketQuaList = lopHocPhan.getListKetQua();
         return ResponseEntity.ok().body(ketQuaList);
     }
+
     @PostMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/" +
             "{nganh-name}/mon-hocs/{mon-hoc-name}/lhps/{lhp-id}/sinh-viens")
     ResponseEntity<List<SinhVien>> addSinhVienIntoLhp(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
-                                                @PathVariable(value = "ky-hocs-name") String ky_hoc_names,
-                                                @PathVariable(value = "nien-khoa-name") String nien_khoa_name,
-                                                @PathVariable(value = "nganh-name") String nganh_name,
-                                                @PathVariable(value = "mon-hoc-name") String mon_hoc_name,
-                                                @PathVariable(value = "lhp-id") Integer lhp_id,
-                                                @RequestBody SinhVien sinhVien) {
+                                                      @PathVariable(value = "ky-hocs-name") String ky_hoc_names,
+                                                      @PathVariable(value = "nien-khoa-name") String nien_khoa_name,
+                                                      @PathVariable(value = "nganh-name") String nganh_name,
+                                                      @PathVariable(value = "mon-hoc-name") String mon_hoc_name,
+                                                      @PathVariable(value = "lhp-id") Integer lhp_id,
+                                                      @RequestBody SinhVien sinhVien) {
 
         LopHocPhan lopHocPhan = lopHocPhanRepository.getById(lhp_id);
         List<KetQua> ketQuaList = lopHocPhan.getListKetQua();
@@ -220,15 +227,15 @@ public class ManagerStudentOfLHPController {
     @PutMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/" +
             "{nganh-name}/mon-hocs/{mon-hoc-name}/lhps/{lhp-id}/sinh-viens/{sinh-vien-id}")
     ResponseEntity<SinhVien> updateSinhVienIntoLhp(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
-                                                      @PathVariable(value = "ky-hocs-name") String ky_hoc_names,
-                                                      @PathVariable(value = "nien-khoa-name") String nien_khoa_name,
-                                                      @PathVariable(value = "nganh-name") String nganh_name,
-                                                      @PathVariable(value = "mon-hoc-name") String mon_hoc_name,
-                                                      @PathVariable(value = "lhp-id") Integer lhp_id,
-                                                      @PathVariable(value = "sinh-vien-id") Integer sinh_vien_id,
-                                                      @RequestBody SinhVien sinhVien) {
+                                                   @PathVariable(value = "ky-hocs-name") String ky_hoc_names,
+                                                   @PathVariable(value = "nien-khoa-name") String nien_khoa_name,
+                                                   @PathVariable(value = "nganh-name") String nganh_name,
+                                                   @PathVariable(value = "mon-hoc-name") String mon_hoc_name,
+                                                   @PathVariable(value = "lhp-id") Integer lhp_id,
+                                                   @PathVariable(value = "sinh-vien-id") Integer sinh_vien_id,
+                                                   @RequestBody SinhVien sinhVien) {
         SinhVien sinhVienOdd = sinhVienRepository.getReferenceById(sinh_vien_id);
-        sinhVienOdd.setMaSinhVien(sinhVien.getMaSinhVien());
+        sinhVienOdd.setMaSinhVien((sinhVien.getMaSinhVien() != null) ? sinhVien.getMaSinhVien() : sinhVienOdd.getMaSinhVien());
         sinhVienOdd.getNguoiDung().setName(sinhVien.getNguoiDung().getName());
         sinhVienOdd.getNguoiDung().setEmail(sinhVien.getNguoiDung().getEmail());
         sinhVienOdd.getNguoiDung().setGioiTinh(sinhVien.getNguoiDung().getGioiTinh());
@@ -254,6 +261,7 @@ public class ManagerStudentOfLHPController {
         List<SinhVien> sinhVienList = lopHocPhan.getListKetQua().stream().map(kq -> kq.getSinhVien()).collect(Collectors.toList());
         return ResponseEntity.ok().body(sinhVienList);
     }
+
     public String standardized(String input) {
         String[] parts = input.split("-");
         return String.join(" ", parts);

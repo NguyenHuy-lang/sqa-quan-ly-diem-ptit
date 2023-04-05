@@ -15,7 +15,6 @@ import java.io.Serializable;
 @Setter
 @Builder
 @Entity
-@ToString
 @Table(name = "tbl_ket_qua")
 public class KetQua implements Serializable {
     @Id
@@ -42,5 +41,9 @@ public class KetQua implements Serializable {
     @JoinColumn(name = "sinh_vien_id")
     @JsonIgnore
     private SinhVien sinhVien;
+    @Transient
+    private String nameSinhVien;
+    @Transient
+    private String maSinhVien;
 
 }
