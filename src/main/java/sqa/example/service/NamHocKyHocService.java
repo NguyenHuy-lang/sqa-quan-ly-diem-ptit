@@ -1,8 +1,6 @@
 package sqa.example.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import sqa.example.model.NamHocKyHoc;
 import sqa.example.repository.NamHocKyHocRepository;
