@@ -1,4 +1,49 @@
 package sqa.example.service;
 
-public class ThangDiemService {
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import sqa.example.model.ThangDiem;
+import sqa.example.repository.ThangDiemRepository;
+
+@Service
+@RequiredArgsConstructor
+public class ThangDiemService 
+{
+	private final ThangDiemRepository thangDiemRepository;
+	
+	public List<ThangDiem> getAll() 
+	{
+		return thangDiemRepository.findAll();
+	}
+	
+	public ThangDiem get(Integer id) 
+	{
+        return thangDiemRepository.findById(id).get();
+    }
+	
+	public ThangDiem create(ThangDiem entity) 
+	{		
+		if (thangDiemRepository.getThangDiemByName(entity.getDiemChu()) != null)
+			return null;
+			
+		return thangDiemRepository.save(entity);
+	}
+	
+	public ThangDiem update(ThangDiem thangDiem) 
+	{
+		return thangDiemRepository.findById(thangDiem.getId())
+				.map(mh -> thangDiemRepository.save(thangDiem))
+				.orElseGet(() -> null);
+    }
+	
+	public boolean delete(Integer id) 
+	{
+		var entity = thangDiemRepository.findById(id).get();
+		if (entity == null)
+			return false;
+		
+		thangDiemRepository.delete(entity);
+		return true;
+	}
 }
