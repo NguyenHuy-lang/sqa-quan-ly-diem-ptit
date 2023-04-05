@@ -19,39 +19,19 @@ import sqa.example.model.NamHocKyHoc;
 import sqa.example.model.Nganh;
 import sqa.example.model.NienKhoa;
 import sqa.example.model.NienKhoaNganh;
-import sqa.example.repository.KyHocRepository;
-import sqa.example.repository.LopHocPhanRepository;
-import sqa.example.repository.MonHocRepository;
-import sqa.example.repository.NamHocKyHocRepository;
-import sqa.example.repository.NamHocRepository;
 import sqa.example.repository.NganhRepository;
-import sqa.example.repository.NienKhoaNganhNamHocKyHocMonHocRepository;
-import sqa.example.repository.NienKhoaNganhNamHocKyHocRepository;
-import sqa.example.repository.NienKhoaNganhRepository;
-import sqa.example.repository.NienKhoaRepository;
+import sqa.example.service.KyHocService;
+import sqa.example.service.LopHocPhanService;
+import sqa.example.service.MonHocService;
+import sqa.example.service.NamHocKyHocService;
+import sqa.example.service.NamHocService;
+import sqa.example.service.NienKhoaNganhNamHocKyHocMonHocService;
+import sqa.example.service.NienKhoaNganhNamHocKyHocService;
+import sqa.example.service.NienKhoaNganhService;
+import sqa.example.service.NienKhoaService;
 
 /*
 http://localhost:8080/api/v1/thong-ke-truot/nam-hocs/2017-2018/ky-hocs/hoc ky 1/nien-khoas/d19/nganhs/cong nghe thong tin/mon-hocs/nhap mon cong nghe phan mem
-
-{
-    "0": {
-        "so hoc vien"			: "20",
-        "ty le truot mon"		: "0.15",
-        "ten giao vien"			: "nguyen phuong ly4",
-        "ma giao vien"			: "gvbcvt313",
-        "ten phong hoc"			: "101-a2",
-        "thoi gian bat dau"		: "08:00:00.0"
-    },
-    "1": {
-        "so hoc vien"			: "20",
-        "ty le truot mon"		: "0.1",
-        "ten giao vien"			: "nguyen phuong ly4",
-        "ma giao vien"			: "gvbcvt313",
-        "ten phong hoc"			: "101-a3",
-        "thoi gian bat dau"		: "08:00:00.0"
-    }
-}
-
 */
 
 @RestController
@@ -59,38 +39,39 @@ http://localhost:8080/api/v1/thong-ke-truot/nam-hocs/2017-2018/ky-hocs/hoc ky 1/
 @RequestMapping("api/v1/thong-ke-truot")
 public class FailureRateStatisticsController
 {
-	private final LopHocPhanRepository lopHocPhanRepository;
-	private final NganhRepository nganhRepository;
-	private final NienKhoaRepository nienKhoaRepository;
-	private final NienKhoaNganhNamHocKyHocMonHocRepository nienKhoaNganhNamHocKyHocMonHocRepository;
-	private final NienKhoaNganhNamHocKyHocRepository nienKhoaNganhNamHocKyHocRepository;
-	private final NienKhoaNganhRepository nienKhoaNganhRepository;
-	private final NamHocRepository namHocRepository;
-	private final KyHocRepository kyHocRepository;
-	private final NamHocKyHocRepository namHocKyHocRepository;
-	private final MonHocRepository monHocRepository;
+	private final NamHocService namHocService;
+	private final KyHocService kyHocService;
+	private final NamHocKyHocService namHocKyHocService;
+	private final NienKhoaService nienKhoaService;
+	private final NganhRepository nganhService;
+	private final NienKhoaNganhService nienKhoaNganhService;
+	private final NienKhoaNganhNamHocKyHocService nienKhoaNganhNamHocKyHocService;
+	private final MonHocService monHocService;
+	private final NienKhoaNganhNamHocKyHocMonHocService nienKhoaNganhNamHocKyHocMonHocService;
+	private final LopHocPhanService lopHocPhanService;
 
 	@GetMapping("nam-hocs")
-    public ResponseEntity<List<NamHoc>> getAllNamhoc() {
-        return ResponseEntity.ok(namHocRepository.findAll());
+    public ResponseEntity<List<NamHoc>> getAllNamhoc() 
+	{
+        return ResponseEntity.ok(namHocService.getAll());
     }
 	
 	@GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs")
     public ResponseEntity<List<NamHocKyHoc>> getAllKyHocOfNamHoc(@PathVariable(value = "nam-hoc-name") String nam_hoc_name) 
 	{
-        int nam_hoc_id = namHocRepository.getIdNamHocByName((nam_hoc_name)).getId();
-        return ResponseEntity.ok(namHocKyHocRepository.getNamHocKyHoc(nam_hoc_id));
+        int namHocId = namHocService.getIdNamHocByName((nam_hoc_name));
+        return ResponseEntity.ok(namHocKyHocService.getNamHocKyHoc(namHocId));
     }
 	
     @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hoc-name}/nien-khoas")
     public ResponseEntity<List<NienKhoa>> getAllNienKhoaOfNamHocKiHoc(@PathVariable(value = "nam-hoc-name") String nam_hoc_name ,
 																	  @PathVariable(value = "ky-hoc-name") String ky_hoc_name) 
 	{
-		int namHoc_id = namHocRepository.getIdNamHocByName((nam_hoc_name)).getId();
-        int kyHoc_id  = kyHocRepository.getKyHocByName(ky_hoc_name).getId();
-        int namHocKyHoc_id = namHocKyHocRepository.getNamHocKyHoc(namHoc_id, kyHoc_id).getId();
+		int namHocId = namHocService.getIdNamHocByName((nam_hoc_name));
+        int kyHocId  = kyHocService.getIdKyHocByNameKyHoc(ky_hoc_name);
+        int namHocKyHocId = namHocKyHocService.getNamHocKyHoc(namHocId, kyHocId).getId();
 
-        var nienKhoaNganhNamHocKiHocList = nienKhoaNganhNamHocKyHocRepository.getListNienKhoaNganhNamHocKyHoc(namHocKyHoc_id);
+        var nienKhoaNganhNamHocKiHocList = nienKhoaNganhNamHocKyHocService.getListNienKhoaNganhNamHocKyHoc(namHocKyHocId);
         var nienKhoaSet = new HashSet<NienKhoa>();
         for (var nienKhoaNganhNamHocKiHoc : nienKhoaNganhNamHocKiHocList) 
 			nienKhoaSet.add(nienKhoaNganhNamHocKiHoc.getNienKhoaNganh().getNienKhoa());
@@ -103,11 +84,11 @@ public class FailureRateStatisticsController
 																		@PathVariable(value = "ky-hoc-name") String ky_hoc_name,
 																		@PathVariable(value = "nien-khoa-name") String nien_khoa_name) 
 	{
-		int namHoc_id = namHocRepository.getIdNamHocByName((nam_hoc_name)).getId();
-        int kyHoc_id  = kyHocRepository.getKyHocByName(ky_hoc_name).getId();
-        int namHocKyHoc_id = namHocKyHocRepository.getNamHocKyHoc(namHoc_id, kyHoc_id).getId();
+		int namHocId = namHocService.getIdNamHocByName((nam_hoc_name));
+        int kyHocId  = kyHocService.getIdKyHocByNameKyHoc(ky_hoc_name);
+        int namHocKyHocId = namHocKyHocService.getNamHocKyHoc(namHocId, kyHocId).getId();
 
-        var nienKhoaNganhNamHocKiHocList = nienKhoaNganhNamHocKyHocRepository.getListNienKhoaNganhNamHocKyHoc(namHocKyHoc_id);
+        var nienKhoaNganhNamHocKiHocList = nienKhoaNganhNamHocKyHocService.getListNienKhoaNganhNamHocKyHoc(namHocKyHocId);
 		var nienKhoaNganhSet = new HashSet<NienKhoaNganh>();
         for (var nienKhoaNganhNamHocKiHoc : nienKhoaNganhNamHocKiHocList) 
 			nienKhoaNganhSet.add(nienKhoaNganhNamHocKiHoc.getNienKhoaNganh());
@@ -125,15 +106,15 @@ public class FailureRateStatisticsController
 																			@PathVariable(value = "nien-khoa-name") String nien_khoa_name,
 																			@PathVariable(value = "nganh-name") String nganh_name) 
 	{
-		int namHoc_id = namHocRepository.getIdNamHocByName((nam_hoc_name)).getId();
-        int kyHoc_id  = kyHocRepository.getKyHocByName(ky_hoc_name).getId();
-        int namHocKyHoc_id = namHocKyHocRepository.getNamHocKyHoc(namHoc_id, kyHoc_id).getId();
-        int nienKhoa_id = nienKhoaRepository.getNienKhoaByName(nien_khoa_name).getId();
-        int nganh_id = nganhRepository.getNganhByTen(nganh_name).getId();
-		int nienKhoaNganh_id = nienKhoaNganhRepository.getNienKhoaNganhByNienKhoaAndNganh(nienKhoa_id, nganh_id).getId();
-		int nienKhoaNganhNamHocKiHoc_id = nienKhoaNganhNamHocKyHocRepository.getNienKhoaNganhNamHocKyHoc(namHocKyHoc_id, nienKhoaNganh_id).getId();
+		int namHocId = namHocService.getIdNamHocByName((nam_hoc_name));
+        int kyHocId  = kyHocService.getIdKyHocByNameKyHoc(ky_hoc_name);
+        int namHocKyHocId = namHocKyHocService.getNamHocKyHoc(namHocId, kyHocId).getId();
+        int nienKhoaId = nienKhoaService.getIdNienKhoaByName(nien_khoa_name);
+        int nganhId = nganhService.getNganhByTen(nganh_name).getId();
+		int nienKhoaNganhId = nienKhoaNganhService.getByNienKhoaIdAndNganhId(nienKhoaId, nganhId).getId();
+		int nienKhoaNganhNamHocKiHocId = nienKhoaNganhNamHocKyHocService.getNienKhoaNganhNamHocKyHoc(namHocKyHocId, nienKhoaNganhId).getId();
 		
-		var nkmhList = nienKhoaNganhNamHocKyHocMonHocRepository.getNienKhoaNganhNamHocKyHocMonHoc(nienKhoaNganhNamHocKiHoc_id);
+		var nkmhList = nienKhoaNganhNamHocKyHocMonHocService.getNienKhoaNganhNamHocKyHocMonHoc(nienKhoaNganhNamHocKiHocId);
 		var monHocSet = new HashSet<MonHoc>();
 		for (var nkmh : nkmhList)
 			monHocSet.add(nkmh.getMonHoc());
@@ -148,17 +129,17 @@ public class FailureRateStatisticsController
 																   @PathVariable(value = "nganh-name") String nganh_name,
 																   @PathVariable(value = "mon-hoc-name") String mon_hoc_name) 
 	{
-		int namHoc_id = namHocRepository.getIdNamHocByName((nam_hoc_name)).getId();
-        int kyHoc_id  = kyHocRepository.getKyHocByName(ky_hoc_name).getId();
-        int namHocKyHoc_id = namHocKyHocRepository.getNamHocKyHoc(namHoc_id, kyHoc_id).getId();
-        int nienKhoa_id = nienKhoaRepository.getNienKhoaByName(nien_khoa_name).getId();
-        int nganh_id = nganhRepository.getNganhByTen(nganh_name).getId();
-		int nienKhoaNganh_id = nienKhoaNganhRepository.getNienKhoaNganhByNienKhoaAndNganh(nienKhoa_id, nganh_id).getId();
-		int nienKhoaNganhNamHocKiHoc_id = nienKhoaNganhNamHocKyHocRepository.getNienKhoaNganhNamHocKyHoc(namHocKyHoc_id, nienKhoaNganh_id).getId();
-		int monHoc_id = monHocRepository.getMonHocByName(mon_hoc_name).getId();
-		int nienKhoaNganhNamHocKiHocMonHoc_id = nienKhoaNganhNamHocKyHocMonHocRepository.getNienKhoaNganhNamHocKyHocMonHoc(nienKhoaNganhNamHocKiHoc_id, monHoc_id).getId();
+		int namHocId = namHocService.getIdNamHocByName((nam_hoc_name));
+        int kyHocId  = kyHocService.getIdKyHocByNameKyHoc(ky_hoc_name);
+        int namHocKyHocId = namHocKyHocService.getNamHocKyHoc(namHocId, kyHocId).getId();
+        int nienKhoaId = nienKhoaService.getIdNienKhoaByName(nien_khoa_name);
+        int nganhId = nganhService.getNganhByTen(nganh_name).getId();
+		int nienKhoaNganhId = nienKhoaNganhService.getByNienKhoaIdAndNganhId(nienKhoaId, nganhId).getId();
+		int nienKhoaNganhNamHocKiHocId = nienKhoaNganhNamHocKyHocService.getNienKhoaNganhNamHocKyHoc(namHocKyHocId, nienKhoaNganhId).getId();
+		int monHocId = monHocService.getIdMonHocByName(mon_hoc_name);
+		int nienKhoaNganhNamHocKiHocMonHoc_id = nienKhoaNganhNamHocKyHocMonHocService.getNienKhoaNganhNamHocKyHocMonHoc(nienKhoaNganhNamHocKiHocId, monHocId).getId();
 		
-		var LHPList = lopHocPhanRepository.getLopHocPhan(nienKhoaNganhNamHocKiHocMonHoc_id);
+		var LHPList = lopHocPhanService.getLopHocPhan(nienKhoaNganhNamHocKiHocMonHoc_id);
         return ResponseEntity.ok(getFailureRateMapOfLopHocPhanList(LHPList));
     }
    
