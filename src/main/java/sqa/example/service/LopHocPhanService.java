@@ -1,7 +1,6 @@
 package sqa.example.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import sqa.example.model.LopHocPhan;
 import sqa.example.repository.LopHocPhanRepository;
@@ -15,4 +14,9 @@ public class LopHocPhanService {
     public List<LopHocPhan> getLopHocPhan(Integer nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id) {
         return lopHocPhanRepository.getLopHocPhan(nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id);
     }
+	
+	public LopHocPhan get(Integer id)
+	{
+		return lopHocPhanRepository.findById(id).get();
+	}
 }
