@@ -22,6 +22,11 @@ public class ThangDiemService
         return thangDiemRepository.findById(id).get();
     }
 	
+	public ThangDiem getByName(String name) 
+	{
+        return thangDiemRepository.getThangDiemByName(name);
+    }
+	
 	public ThangDiem create(ThangDiem entity) 
 	{		
 		if (thangDiemRepository.getThangDiemByName(entity.getDiemChu()) != null)
