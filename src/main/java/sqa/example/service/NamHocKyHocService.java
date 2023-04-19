@@ -11,12 +11,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NamHocKyHocService {
     private final NamHocKyHocRepository namHocKyHocRepository;
-    public NamHocKyHoc getNamHocKyHoc(Integer nam_hoc_id,
-                                      Integer ky_hoc_id){
-        return namHocKyHocRepository.getNamHocKyHoc(nam_hoc_id, ky_hoc_id);
-
+    
+	public NamHocKyHoc findByNamHocAndKyHocId(Integer nam_hoc_id, Integer ky_hoc_id){
+        return namHocKyHocRepository.findByNamHocAndKyHocId(nam_hoc_id, ky_hoc_id);
     }
-    public List<NamHocKyHoc> getNamHocKyHoc(Integer nam_hoc_id){
-        return namHocKyHocRepository.getNamHocKyHoc(nam_hoc_id);
+	
+    public List<NamHocKyHoc> findAllByNamHocId(Integer nam_hoc_id){
+        return namHocKyHocRepository.findAllByNamHocId(nam_hoc_id);
     }
 }
