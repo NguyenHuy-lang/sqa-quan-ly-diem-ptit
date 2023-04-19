@@ -11,12 +11,16 @@ import sqa.example.repository.NienKhoaNganhNamHocKyHocRepository;
 public class NienKhoaNganhNamHocKyHocService {
     private final NienKhoaNganhNamHocKyHocRepository nienKhoaNganhNamHocKyHocRepository;
 
-	public List<NienKhoaNganhNamHocKyHoc> getListNienKhoaNganhNamHocKyHoc(Integer namHocKyHocId) {
-		return nienKhoaNganhNamHocKyHocRepository.getListNienKhoaNganhNamHocKyHoc(namHocKyHocId);
+	public List<NienKhoaNganhNamHocKyHoc> findAllByNamHocKyHocId(Integer namHocKyHocId) {
+		return nienKhoaNganhNamHocKyHocRepository.findAllByNamHocKyHocId(namHocKyHocId);
 	}
 	
-	public NienKhoaNganhNamHocKyHoc getNienKhoaNganhNamHocKyHoc(Integer namHocKyHocId, Integer nienKhoaNganhId) {
-		return nienKhoaNganhNamHocKyHocRepository.getNienKhoaNganhNamHocKyHoc(namHocKyHocId, nienKhoaNganhId);
+	public List<NienKhoaNganhNamHocKyHoc> findAllByNienKhoaNganhId(Integer nienKhoaNganhId) {
+		return nienKhoaNganhNamHocKyHocRepository.findAllByNienKhoaNganhId(nienKhoaNganhId);
+	}
+	
+	public NienKhoaNganhNamHocKyHoc findByNienKhoaNganhAndNamHocKyHocId(Integer nienKhoaNganhId, Integer namHocKyHocId) {
+		return nienKhoaNganhNamHocKyHocRepository.findByNienKhoaNganhAndNamHocKyHocId(nienKhoaNganhId, namHocKyHocId);
 	}
 
 }
