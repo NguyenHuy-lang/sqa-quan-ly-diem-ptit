@@ -10,37 +10,22 @@ import sqa.example.service.ThangDiemService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/cau-hinh/")
+@RequestMapping("api/v1/cau-hinh-thang-diem/")
 public class ThangDiemConfigurationController {
     private final ThangDiemService thangDiemService;
 
     @GetMapping("/thang-diems")
-    public ResponseEntity<List<ThangDiem>> all() 
-	{
-        return ResponseEntity.ok(thangDiemService.getAll());
+    public ResponseEntity<List<ThangDiem>> all() {
+        return ResponseEntity.ok(thangDiemService.findAll());
     }
 	
 	@GetMapping("/thang-diems/{id}")
-    public ResponseEntity<ThangDiem> one(@PathVariable("id") Integer id) 
-	{
-        return ResponseEntity.ok(thangDiemService.get(id));
+    public ResponseEntity<ThangDiem> one(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(thangDiemService.findById(id));
     }
-
-	@PostMapping("/thang-diems")
-	public ResponseEntity<ThangDiem> create(@RequestBody ThangDiem thangDiem) 
-	{
-		return ResponseEntity.ok(thangDiemService.create(thangDiem));
-	}
 	
 	@PutMapping("/thang-diems")
-    public ResponseEntity<ThangDiem> update(@RequestBody ThangDiem thangDiem) 
-	{
+    public ResponseEntity<ThangDiem> update(@RequestBody ThangDiem thangDiem) {
 		return ResponseEntity.ok(thangDiemService.update(thangDiem));
     }
-	
-	@DeleteMapping("/thang-diems/{id}")
-	public ResponseEntity<Boolean> delete(@PathVariable("id") Integer id) 
-	{
-		return ResponseEntity.ok(thangDiemService.delete(id));
-	}
 }
