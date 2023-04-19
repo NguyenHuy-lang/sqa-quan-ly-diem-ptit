@@ -7,40 +7,57 @@ import sqa.example.model.*;
 
 import java.util.*;
 import sqa.example.service.MonHocService;
+import sqa.example.service.NganhService;
+import sqa.example.service.NienKhoaNganhNamHocKyHocMonHocService;
+import sqa.example.service.NienKhoaNganhNamHocKyHocService;
+import sqa.example.service.NienKhoaNganhService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/cau-hinh/")
+@RequestMapping("api/v1/cau-hinh-mon-hoc/")
 public class MonHocConfigurationController {
-    private final MonHocService service;
+	private final NganhService nganhService;
+	private final NienKhoaNganhService nienKhoaNganhService;
+	private final NienKhoaNganhNamHocKyHocService nienKhoaNganhNamHocKyHocService;
+	private final NienKhoaNganhNamHocKyHocMonHocService nienKhoaNganhNamHocKyHocMonHocService;
+    private final MonHocService monHocService;
 
-    @GetMapping("/mon-hocs")
-    public ResponseEntity<List<MonHoc>> getAll() 
-	{
-        return ResponseEntity.ok(service.getAll());
-    }
-	
-	@GetMapping("/mon-hocs/{id}")
-    public ResponseEntity<MonHoc> get(@PathVariable("id") Integer id) 
-	{
-        return ResponseEntity.ok(service.get(id));
+	@GetMapping("/nganhs")
+    public ResponseEntity<List<Nganh>> getAllNganh() {
+        return ResponseEntity.ok(nganhService.findAll());
     }
 
-	@PostMapping("/mon-hocs")
-	public ResponseEntity<MonHoc> create(@RequestBody MonHoc monHoc) 
-	{
-		return ResponseEntity.ok(service.create(monHoc));
-	}
+    @GetMapping("/nganhs/{nganhId}/mon-hocs")
+    public ResponseEntity<List<MonHoc>> getAllNganhMonHoc(
+			@PathVariable("nganhId") Integer nganhId) {
+		var listNienKhoaNganh = nienKhoaNganhService.findAllByNganhId(nganhId);
 	
-	@PutMapping("/mon-hocs")
-    public ResponseEntity<MonHoc> update(@RequestBody MonHoc monHoc) 
-	{
-		return ResponseEntity.ok(service.update(monHoc)); 
+		HashSet<NienKhoaNganhNamHocKyHoc> setNienKhoaNganhNamHocKyHoc = new HashSet<>();
+		for (var nienKhoaNganh : listNienKhoaNganh) {
+			var list = nienKhoaNganhNamHocKyHocService.findAllByNienKhoaNganhId(nienKhoaNganh.getId());
+			for (var listElement : list)
+				setNienKhoaNganhNamHocKyHoc.add(listElement);
+		}
+		
+		HashSet<MonHoc> setMonHoc = new HashSet<>();
+		for (var nienKhoaNganhNamHocKyHoc : setNienKhoaNganhNamHocKyHoc) {
+			var list = nienKhoaNganhNamHocKyHocMonHocService.findAllByNienKhoaNganhNamHocKyHocId(nienKhoaNganhNamHocKyHoc.getId());
+			for (var listElement : list)
+				setMonHoc.add(listElement.getMonHoc());
+		}
+		
+        return ResponseEntity.ok(setMonHoc.stream().toList());
     }
 	
-	@DeleteMapping("/mon-hocs/{id}")
-	public ResponseEntity<Boolean> delete(@PathVariable("id") Integer id) 
-	{
-		return ResponseEntity.ok(service.delete(id)); 
-	}
+	@GetMapping("/nganhs/{nganhId}/mon-hocs/{monHocId}")
+    public ResponseEntity<MonHoc> get(
+			@PathVariable("nganhId") Integer nganhId,
+			@PathVariable("monHocId") Integer monHocId) {
+        return ResponseEntity.ok(monHocService.findById(monHocId));
+    }
+
+	@PutMapping("/nganhs/{nganhId}/mon-hocs")
+    public ResponseEntity<MonHoc> update(@RequestBody MonHoc monHoc) {
+		return ResponseEntity.ok(monHocService.update(monHoc)); 
+    }
 }
