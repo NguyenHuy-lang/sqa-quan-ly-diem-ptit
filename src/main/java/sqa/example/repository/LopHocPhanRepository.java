@@ -10,12 +10,6 @@ import java.util.List;
 
 @Repository
 public interface LopHocPhanRepository extends JpaRepository<LopHocPhan, Integer> {
-    @Query(value = "SELECT * FROM tbl_lop_hoc_phan lhp WHERE " +
-            "lhp.nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id = :nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id", nativeQuery = true)
-    List<LopHocPhan> getLopHocPhan(@Param("nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id")
-                             Integer nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id);
-	
-	@Query(value = "SELECT * FROM tbl_lop_hoc_phan lhp WHERE " +
-				   "lhp.id = :id", nativeQuery = true)
-    LopHocPhan getLopHocPhanById(@Param("id") Integer id);
+    @Query(value = "SELECT * FROM tbl_lop_hoc_phan lhp WHERE lhp.nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id = :nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id", nativeQuery = true)
+    List<LopHocPhan> findAllByNienKhoaNganhNamHocKyHocMonHocId(@Param("nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id") Integer nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id);
 }
