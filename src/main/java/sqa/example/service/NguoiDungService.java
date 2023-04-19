@@ -10,8 +10,7 @@ import sqa.example.repository.NguoiDungRepository;
 public class NguoiDungService {
 	private final NguoiDungRepository nguoiDungRepository;
 
-	public NguoiDung get(Integer id) 
-	{
+	public NguoiDung findById(Integer id) {
         return nguoiDungRepository.findById(id).get();
     }
 }
