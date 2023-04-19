@@ -10,10 +10,9 @@ import java.util.List;
 
 @Repository
 public interface NamHocKyHocRepository extends JpaRepository<NamHocKyHoc, Integer> {
-    @Query(value = "SELECT * FROM tbl_nam_hoc_ky_hoc nhkh WHERE nhkh.nam_hoc_id = :nam_hoc_id AND " +
-            "nhkh.ky_hoc_id = :ky_hoc_id", nativeQuery = true)
-    public NamHocKyHoc getNamHocKyHoc(@Param("nam_hoc_id") Integer nam_hoc_id,
-                               @Param("ky_hoc_id") Integer ky_hoc_id);
+    @Query(value = "SELECT * FROM tbl_nam_hoc_ky_hoc nhkh WHERE nhkh.nam_hoc_id = :nam_hoc_id AND nhkh.ky_hoc_id = :ky_hoc_id", nativeQuery = true)
+    public NamHocKyHoc findByNamHocAndKyHocId(@Param("nam_hoc_id") Integer nam_hoc_id, @Param("ky_hoc_id") Integer ky_hoc_id);
+	
     @Query(value = "SELECT * FROM tbl_nam_hoc_ky_hoc nhkh WHERE nhkh.nam_hoc_id = :nam_hoc_id" ,nativeQuery = true)
-    public List<NamHocKyHoc> getNamHocKyHoc(@Param("nam_hoc_id") Integer nam_hoc_id);
+    public List<NamHocKyHoc> findAllByNamHocId(@Param("nam_hoc_id") Integer nam_hoc_id);
 }
