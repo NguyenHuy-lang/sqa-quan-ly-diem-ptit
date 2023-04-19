@@ -11,29 +11,17 @@ import sqa.example.repository.MonHocRepository;
 public class MonHocService {
     private final MonHocRepository entityRepository;
 	
-    public Integer getIdMonHocByName(String name) 
-	{
-        return entityRepository.getMonHocByName(name).getId();
-    }
-	
-	public List<MonHoc> getAll() 
-	{
+	public List<MonHoc> findAll() {
 		return entityRepository.findAll();
 	}
 	
-	public MonHoc get(Integer id) 
-	{
+	public MonHoc findById(Integer id) {
         return entityRepository.findById(id).get();
     }
 	
-	public MonHoc create(MonHoc entity) 
-	{
+	public MonHoc create(MonHoc entity) {
 		if (isInvalid(entity))
 			return null;
-		
-		if (entityRepository.getMonHocByName(entity.getTen()) != null)
-			return null;
-			
 		return entityRepository.save(entity);
 	}
 	
@@ -47,8 +35,7 @@ public class MonHocService {
 		return null;
     }
 	
-	public boolean delete(Integer id) 
-	{
+	public boolean delete(Integer id) {
 		var entity = entityRepository.findById(id).get();
 		if (entity == null)
 			return false;
@@ -57,8 +44,7 @@ public class MonHocService {
 		return true;
 	}
 	
-	private boolean isInvalid(MonHoc entity)
-	{
+	private boolean isInvalid(MonHoc entity) {
 		boolean isInvalid = false;
 		isInvalid |= entity.getTyLeDiemCC() < 0 || entity.getTyLeDiemTH() < 0 
 				  || entity.getTyLeDiemKT() < 0 || entity.getTyLeDiemBT() < 0 || entity.getTyLeDiemCuoiKy() < 0;
