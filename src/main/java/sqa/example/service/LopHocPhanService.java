@@ -11,12 +11,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LopHocPhanService {
     private final LopHocPhanRepository lopHocPhanRepository;
-    public List<LopHocPhan> getLopHocPhan(Integer nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id) {
-        return lopHocPhanRepository.getLopHocPhan(nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id);
-    }
-	
-	public LopHocPhan get(Integer id)
-	{
+    
+	public LopHocPhan findById(Integer id){
 		return lopHocPhanRepository.findById(id).get();
 	}
+	
+	public List<LopHocPhan> findAllByNienKhoaNganhNamHocKyHocMonHocId(Integer nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id) {
+        return lopHocPhanRepository.findAllByNienKhoaNganhNamHocKyHocMonHocId(nien_khoa_nganh_nam_hoc_ky_hoc_mon_hoc_id);
+    }
 }
