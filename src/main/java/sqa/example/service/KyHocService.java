@@ -8,22 +8,14 @@ import sqa.example.repository.KyHocRepository;
 
 @Service
 @RequiredArgsConstructor
-public class KyHocService 
-{
-    private final KyHocRepository kyHocRepository;
-    
-	public Integer getIdKyHocByNameKyHoc(String name) {
-        KyHoc kyHoc = kyHocRepository.getKyHocByName(name);
-        return kyHoc.getId();
-    }
-	
-	public List<KyHoc> getAll() 
-	{
-		return kyHocRepository.findAll();
+public class KyHocService {
+	private final KyHocRepository kyHocRepository;
+
+	public KyHoc findById(Integer id) {
+		return kyHocRepository.findById(id).get();
 	}
 	
-	public KyHoc getByName(String name) 
-	{
-		return kyHocRepository.getKyHocByName(name);
+	public List<KyHoc> findAll() {
+		return kyHocRepository.findAll();
 	}
 }
