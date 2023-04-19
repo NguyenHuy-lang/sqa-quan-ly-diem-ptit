@@ -9,6 +9,5 @@ import sqa.example.model.ThangDiem;
 @Repository
 public interface ThangDiemRepository extends JpaRepository<ThangDiem, Integer> {
 	@Query(value = "SELECT * FROM tbl_thang_diem td WHERE td.diem_chu = :ten LIMIT 1", nativeQuery = true)
-    ThangDiem getThangDiemByName(@Param("ten") String ten);
+    ThangDiem findByName(@Param("ten") String ten);
 }
-
