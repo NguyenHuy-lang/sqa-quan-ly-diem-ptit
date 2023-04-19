@@ -10,8 +10,7 @@ import sqa.example.repository.SinhVienRepository;
 public class SinhVienService {
 	private final SinhVienRepository sinhVienRepository;
 
-	public SinhVien get(Integer id) 
-	{
+	public SinhVien findById(Integer id) {
         return sinhVienRepository.findById(id).get();
-  }
+    }
 }
