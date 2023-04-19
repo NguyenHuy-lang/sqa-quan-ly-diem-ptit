@@ -9,11 +9,8 @@ import sqa.example.repository.NienKhoaRepository;
 @RequiredArgsConstructor
 public class NienKhoaService {
     private final NienKhoaRepository nienKhoaRepository;
-    public NienKhoa getNienKhoaById(Integer id) {
-        return nienKhoaRepository.getById(id);
-    }
-
-    public Integer getIdNienKhoaByName(String name) {
-        return nienKhoaRepository.getNienKhoaByName(name).getId();
+	
+    public NienKhoa findById(Integer id) {
+        return nienKhoaRepository.findById(id).get();
     }
 }
