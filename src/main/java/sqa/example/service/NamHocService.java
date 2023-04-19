@@ -11,11 +11,11 @@ import sqa.example.repository.NamHocRepository;
 public class NamHocService {
     private final NamHocRepository namHocRepository;
 	
-    public Integer getIdNamHocByName(String name) {
-        return namHocRepository.getIdNamHocByName(name).getId();
+    public NamHoc findById(Integer id) {
+        return namHocRepository.findById(id).get();
     }
 	
-	public List<NamHoc> getAll() {
+	public List<NamHoc> findAll() {
 		return namHocRepository.findAll();
 	}
 }
