@@ -1,6 +1,0 @@
-CREATE TABLE tbl_nganh_hoc (
-    id INT NOT NULL PRIMARY KEY,
-    CONSTRAINT fk_nganh_hoc_nganh FOREIGN KEY(id)
-    REFERENCES tbl_nganh(id) ON DELETE CASCADE ON UPDATE CASCADE
-
-);
