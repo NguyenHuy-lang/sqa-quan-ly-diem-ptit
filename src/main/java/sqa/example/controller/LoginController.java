@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("api/v1/login")
+@CrossOrigin
 public class LoginController {
     @Autowired
     HttpSession session;
