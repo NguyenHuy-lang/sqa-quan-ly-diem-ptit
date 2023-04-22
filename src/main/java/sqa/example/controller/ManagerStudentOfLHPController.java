@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 @Log4j2
 @CrossOrigin
 public class ManagerStudentOfLHPController {
-    private final NganhRepository nganhRepository;
+    @Autowired
+    private NganhRepository nganhRepository;
     @Autowired
     private  NamHocRepository namHocRepository;
     @Autowired
@@ -40,21 +41,21 @@ public class ManagerStudentOfLHPController {
     @Autowired
     private  KyHocService kyHocService;
     @Autowired
-    private final MonHocService monHocService;
+    private  MonHocService monHocService;
     @Autowired
-    private final SinhVienRepository sinhVienRepository;
+    private  SinhVienRepository sinhVienRepository;
     @Autowired
-    private final NienKhoaNganhNamHocKyHocRepository nienKhoaNganhNamHocKyHocRepository;
+    private  NienKhoaNganhNamHocKyHocRepository nienKhoaNganhNamHocKyHocRepository;
     @Autowired
-    private final NienKhoaNganhNamHocKyHocMonHocRepository nienKhoaNganhNamHocKyHocMonHocRepository;
+    private  NienKhoaNganhNamHocKyHocMonHocRepository nienKhoaNganhNamHocKyHocMonHocRepository;
     @Autowired
-    private final NamHocKyHocRepository namHocKyHocRepository;
+    private NamHocKyHocRepository namHocKyHocRepository;
     @Autowired
-    private final LopHocPhanRepository lopHocPhanRepository;
+    private LopHocPhanRepository lopHocPhanRepository;
     @Autowired
-    private final KetQuaRepository ketQuaRepository;
+    private  KetQuaRepository ketQuaRepository;
     @Autowired
-    private final ThangDiemRepository thangDiemRepository;
+    private  ThangDiemRepository thangDiemRepository;
     @Autowired
     HttpSession session;
 
@@ -70,7 +71,8 @@ public class ManagerStudentOfLHPController {
     }
 
     @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs")
-    public ResponseEntity<List<NamHocKyHoc>> getAllKyHocOfNamHoc(@PathVariable(value = "nam-hoc-name") String nam_hoc_name) {
+    public ResponseEntity<List<NamHocKyHoc>> getAllKyHocOfNamHoc(
+            @PathVariable(value = "nam-hoc-name") String nam_hoc_name) {
         if(!checkRole()) {
             return ResponseEntity.notFound().build();
         }
