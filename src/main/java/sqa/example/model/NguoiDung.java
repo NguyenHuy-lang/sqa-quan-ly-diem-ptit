@@ -1,6 +1,8 @@
 package sqa.example.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.io.Serializable;
@@ -22,8 +24,10 @@ public class NguoiDung {
     @Column(name = "dia_chi")
     private String diaChi;
     @Column(name = "email")
+    @JsonProperty("email")
     private String email;
     @Column(name = "so_dien_thoai")
+    @JsonProperty("so_dien_thoai")
     private String soDienThoai;
     @Column(name = "ngay_sinh")
     private Date ngaySinh;

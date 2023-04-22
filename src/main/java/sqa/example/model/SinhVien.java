@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "tbl_sinh_vien")
 @Builder
+@ToString
 public class SinhVien{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

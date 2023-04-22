@@ -21,4 +21,7 @@ public interface NienKhoaNganhNamHocKyHocRepository extends JpaRepository<sqa.ex
             "WHERE nknnhkh.nam_hoc_ky_hoc_id = :nam_hoc_ky_hoc_id", nativeQuery = true)
     List<NienKhoaNganhNamHocKyHoc> getListNienKhoaNganhNamHocKyHoc(@Param("nam_hoc_ky_hoc_id") Integer nam_hoc_ky_hoc_id);
 
+    @Query(value = "SELECT * FROM tbl_nien_khoa_nganh_nam_hoc_ky_hoc nknnhkh WHERE nknnhkh.nien_khoa_nganh_id = :nien_khoa_nganh_id", nativeQuery = true)
+    List<NienKhoaNganhNamHocKyHoc> findAllByNienKhoaNganhId(@Param("nien_khoa_nganh_id") Integer nien_khoa_nganh_id);
+
 }

@@ -13,13 +13,13 @@ import java.util.List;
 public class NienKhoaNganhNamHocKyHocMonHocService {
     private final NienKhoaNganhNamHocKyHocMonHocRepository nienKhoaNganhNamHocKyHocMonHocRepository;
 
-    List<NienKhoaNganhNamHocKyHocMonHoc> getNienKhoaNganhNamHocKyHocMonHoc
+    public List<NienKhoaNganhNamHocKyHocMonHoc> getNienKhoaNganhNamHocKyHocMonHoc
             (Integer nien_khoa_nganh_nam_hoc_ky_hoc_id){
         return nienKhoaNganhNamHocKyHocMonHocRepository.getNienKhoaNganhNamHocKyHocMonHoc(nien_khoa_nganh_nam_hoc_ky_hoc_id);
     }
 
 
-    NienKhoaNganhNamHocKyHocMonHoc getNienKhoaNganhNamHocKyHocMonHoc
+    public NienKhoaNganhNamHocKyHocMonHoc getNienKhoaNganhNamHocKyHocMonHoc
             (Integer nien_khoa_nganh_nam_hoc_ky_hoc_id,
              Integer mon_hoc_id){
         return nienKhoaNganhNamHocKyHocMonHocRepository.getNienKhoaNganhNamHocKyHocMonHoc(nien_khoa_nganh_nam_hoc_ky_hoc_id, mon_hoc_id);

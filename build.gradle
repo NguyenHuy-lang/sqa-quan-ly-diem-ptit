@@ -26,18 +26,25 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.projectlombok:lombok:1.18.22'
 	implementation 'junit:junit:4.13.1'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'org.projectlombok:lombok'
+	implementation 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'org.flywaydb:flyway-core:9.8.1'
 	implementation "org.flywaydb:flyway-mysql"
 	testImplementation 'org.assertj:assertj-core:3.20.2'
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-	compileOnly 'org.projectlombok:lombok:1.18.20'
+	implementation 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	testImplementation 'mysql:mysql-connector-java:8.0.25'
+		// other dependencies
+	testImplementation 'com.h2database:h2:1.4.200'
+
+
+//	testCompile('com.h2database:h2')
+
 }
 
 tasks.named('test') {

@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import sqa.example.model.NienKhoaNganh;
 
+import java.util.List;
+
 @Repository
 public interface NienKhoaNganhRepository extends JpaRepository<NienKhoaNganh, Integer> {
     @Query(value = "SELECT * FROM tbl_nien_khoa_nganh nkn WHERE nkn.id = :user_id LIMIT 1", nativeQuery = true)
@@ -17,4 +19,9 @@ public interface NienKhoaNganhRepository extends JpaRepository<NienKhoaNganh, In
     NienKhoaNganh getNienKhoaNganhByNienKhoaAndNganh(@Param("nien_khoa_id") Integer nien_khoa_id,
                                                      @Param("nganh_id") Integer nganh_id) ;
     NienKhoaNganh getNienKhoaNganhByNienKhoaIdAndNganhId(Integer nienKhoaId, Integer nganhId);
+
+    @Query(value = "SELECT * FROM tbl_nien_khoa_nganh nkn WHERE nkn.nganh_id =:nganh_id", nativeQuery = true)
+    List<NienKhoaNganh> findAllByNganhId(@Param("nganh_id") Integer nganh_id);
+
+
 }

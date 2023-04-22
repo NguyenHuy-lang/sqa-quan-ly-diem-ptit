@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import sqa.example.model.NienKhoaNganhNamHocKyHoc;
 import sqa.example.repository.NienKhoaNganhNamHocKyHocRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class NienKhoaNganhNamHocKyHocService {
@@ -16,5 +18,10 @@ public class NienKhoaNganhNamHocKyHocService {
     ){
         return nienKhoaNganhNamHocKyHocRepository.getNienKhoaNganhNamHocKyHoc(nam_hoc_ky_hoc_id, nien_khoa_nganh_id);
     }
+    public List<NienKhoaNganhNamHocKyHoc> findAllByNienKhoaNganhId(Integer nienKhoaNganhId) {
+        return nienKhoaNganhNamHocKyHocRepository.findAllByNienKhoaNganhId(nienKhoaNganhId);
+    }
+
+
 
 }
