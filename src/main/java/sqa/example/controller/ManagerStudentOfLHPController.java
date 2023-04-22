@@ -154,7 +154,8 @@ public class ManagerStudentOfLHPController {
                 getNienKhoaNganhByNienKhoaAndNganh(nien_khoa_id, nganh_id);
 
         NamHocKyHoc namHocKyHoc = namHocKyHocRepository.getNamHocKyHoc(nam_hoc_id, ky_hoc_id);
-        NienKhoaNganhNamHocKyHoc nienKhoaNganhNamHocKyHoc = nienKhoaNganhNamHocKyHocRepository.
+        NienKhoaNganhNamHocKyHoc nienKhoaNganhNamHocKyHoc =
+                nienKhoaNganhNamHocKyHocRepository.
                 getNienKhoaNganhNamHocKyHoc(namHocKyHoc.getId(), nienKhoaNganh.getId());
         List<NienKhoaNganhNamHocKyHocMonHoc> nienKhoaNganhNamHocKyHocMonHocList =
                 nienKhoaNganhNamHocKyHocMonHocRepository.
@@ -185,7 +186,8 @@ public class ManagerStudentOfLHPController {
                 getNienKhoaNganhByNienKhoaAndNganh(nien_khoa_id, nganh_id);
 
         NamHocKyHoc namHocKyHoc = namHocKyHocRepository.getNamHocKyHoc(nam_hoc_id, ky_hoc_id);
-        NienKhoaNganhNamHocKyHoc nienKhoaNganhNamHocKyHoc = nienKhoaNganhNamHocKyHocRepository.
+        NienKhoaNganhNamHocKyHoc nienKhoaNganhNamHocKyHoc =
+                nienKhoaNganhNamHocKyHocRepository.
                 getNienKhoaNganhNamHocKyHoc(namHocKyHoc.getId(), nienKhoaNganh.getId());
         NienKhoaNganhNamHocKyHocMonHoc nienKhoaNganhNamHocKyHocMonHoc = nienKhoaNganhNamHocKyHocMonHocRepository.
                 getNienKhoaNganhNamHocKyHocMonHoc(nienKhoaNganhNamHocKyHoc.getId(), mon_hoc_id);

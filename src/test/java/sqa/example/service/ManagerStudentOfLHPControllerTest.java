@@ -13,6 +13,7 @@ import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -178,6 +179,7 @@ public class ManagerStudentOfLHPControllerTest {
     }
 
     @Test
+    @Transactional(rollbackOn = {RuntimeException.class, SQLException.class})
     public void testGetAllNienKhoa() throws Exception {
         setUp();
         Integer ky_hoc_id = 1;
@@ -212,12 +214,186 @@ public class ManagerStudentOfLHPControllerTest {
         mockMvc.perform(get("/api/v1/admin/nam-hocs/2017-2018/ky-hocs/hoc-ky-1/nien-khoas"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].ten", is("d19")));
     }
+    @Test
+    @Transactional(rollbackOn = {RuntimeException.class, SQLException.class})
+    public void getAllNganh() throws Exception{
+        setUp();
 
+        Integer ky_hoc_id = 1;
+        Integer nam_hoc_id = 1;
+        Integer nien_khoa_id = 1;
+        NamHocKyHoc namHocKyHoc = new NamHocKyHoc(1,
+                new NamHoc(1, "2017-2018"),
+                new KyHoc(1, "hoc ky 1"));
 
+        List<NienKhoaNganhNamHocKyHoc> nienKhoaNganhNamHocKyhocList
+                = Arrays.asList(
+                        new NienKhoaNganhNamHocKyHoc(1,
+                                new NamHocKyHoc(
+                                        1,
+                                        new NamHoc(1, "2017-2018"),
+                                        new KyHoc(1, "hoc ky 1")
+                                ),
+                                new NienKhoaNganh(1,
+                                        new Nganh(1, "cong nghe thong tin"),
+                                        new NienKhoa(1, "d19")
+                                )
+                        )
+                );
+        when(kyHocService.getIdKyHocByNameKyHoc(anyString())).thenReturn(ky_hoc_id);
+        when(namHocService.getIdNamHocByName(anyString())).thenReturn(nam_hoc_id);
+        when(nienKhoaService.getIdNienKhoaByName(anyString())).thenReturn(nien_khoa_id);
+        when(namHocKyHocRepository.getNamHocKyHoc(anyInt(), anyInt())).thenReturn(namHocKyHoc);
+        when(nienKhoaNganhNamHocKyHocRepository.getListNienKhoaNganhNamHocKyHoc(anyInt())).thenReturn(nienKhoaNganhNamHocKyhocList);
+
+        mockMvc.perform(get("/api/v1/admin/nam-hocs/2017-2018/ky-hocs/hoc-ky-1/nien-khoas/d19/nganh"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].ten", is("cong nghe thong tin")));
+    }
+
+    @Test
+    void testGetListMonHoc() throws Exception{
+        setUp();
+        Integer ky_hoc_id = 1;
+        Integer nam_hoc_id = 1;
+        Integer nien_khoa_id = 1;
+        Integer nganh_id = 1;
+
+        NienKhoaNganh nienKhoaNganh = new NienKhoaNganh(
+                1,
+                new Nganh(1, "cong nghe thong tin"),
+                new NienKhoa(1, "d19")
+        );
+
+        NamHocKyHoc namHocKyHoc = new NamHocKyHoc(1,
+                new NamHoc(1, "2017-2018"),
+                new KyHoc(1, "hoc ky 1"));
+
+        NienKhoaNganhNamHocKyHoc nienKhoaNganhNamHocKyHoc =
+                new NienKhoaNganhNamHocKyHoc(1, namHocKyHoc, nienKhoaNganh);
+
+        List<NienKhoaNganhNamHocKyHocMonHoc> nienKhoaNganhNamHocKyHocMonHocList
+                = Arrays.asList(new NienKhoaNganhNamHocKyHocMonHoc(1,
+                        new MonHoc(1,
+                                "nhap mon cong nghe phan mem 2",
+                                0.1,
+                                0.0,
+                                0.1,
+                                0.3,
+                                0.5
+                        ),
+                        new NienKhoaNganhNamHocKyHoc(1,
+                                new NamHocKyHoc(
+                                        1,
+                                        new NamHoc(1, "2017-2018"),
+                                        new KyHoc(1, "hoc ky 1")
+                                ),
+                                new NienKhoaNganh(1,
+                                        new Nganh(1, "cong nghe thong tin"),
+                                        new NienKhoa(1, "d19")
+                                )
+                        )
+                )
+        );
+        when(kyHocService.getIdKyHocByNameKyHoc(anyString())).thenReturn(ky_hoc_id);
+        when(namHocService.getIdNamHocByName(anyString())).thenReturn(nam_hoc_id);
+        when(nienKhoaService.getIdNienKhoaByName(anyString())).thenReturn(nien_khoa_id);
+        when(nganhService.getIdOfNganhByName(anyString())).thenReturn(nganh_id);
+        when(nienKhoaNganhRepository.getNienKhoaNganhByNienKhoaAndNganh(anyInt(), anyInt())).thenReturn(nienKhoaNganh);
+        when(namHocKyHocRepository.getNamHocKyHoc(anyInt(), anyInt())).thenReturn(namHocKyHoc);
+        when(nienKhoaNganhNamHocKyHocRepository.getNienKhoaNganhNamHocKyHoc(anyInt(), anyInt())).thenReturn(nienKhoaNganhNamHocKyHoc);
+        when(nienKhoaNganhNamHocKyHocMonHocRepository.getNienKhoaNganhNamHocKyHocMonHoc(anyInt())).thenReturn(nienKhoaNganhNamHocKyHocMonHocList);
+
+        mockMvc.perform(get("/api/v1/admin/nam-hocs/2017-2018/ky-hocs/hoc-ky-1/nien-khoas/d19/nganh/cong-nghe-thong-tin/mon-hocs"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].ten", is("nhap mon cong nghe phan mem 2")))
+                .andExpect(jsonPath("$[0].tyLeDiemCC", is(0.1)))
+                .andExpect(jsonPath("$[0].tyLeDiemTH", is(0.0)))
+                .andExpect(jsonPath("$[0].tyLeDiemKT", is(0.1)))
+                .andExpect(jsonPath("$[0].tyLeDiemBT", is(0.3)))
+                .andExpect(jsonPath("$[0].tyLeDiemCuoiKy", is(0.5)));
+    }
+
+    @Test
+    public void testGetListLHP () throws Exception{
+        setUp();
+        Integer ky_hoc_id = 1;
+        Integer nam_hoc_id = 1;
+        Integer nien_khoa_id = 1;
+        Integer nganh_id = 1;
+        Integer mon_hoc_id = 1;
+        NienKhoaNganh nienKhoaNganh = new NienKhoaNganh(
+                1,
+                new Nganh(1, "cong nghe thong tin"),
+                new NienKhoa(1, "d19")
+        );
+        NamHocKyHoc namHocKyHoc = new NamHocKyHoc(1,
+                new NamHoc(1, "2017-2018"),
+                new KyHoc(1, "hoc ky 1"));
+
+        NienKhoaNganhNamHocKyHoc nienKhoaNganhNamHocKyHoc =
+                new NienKhoaNganhNamHocKyHoc(1, namHocKyHoc, nienKhoaNganh);
+        NienKhoaNganhNamHocKyHocMonHoc nienKhoaNganhNamHocKyHocMonHoc = new NienKhoaNganhNamHocKyHocMonHoc(1,
+                new MonHoc(1,
+                        "nhap mon cong nghe phan mem 2",
+                        0.1,
+                        0.0,
+                        0.1,
+                        0.3,
+                        0.5
+                ),
+                new NienKhoaNganhNamHocKyHoc(1,
+                        new NamHocKyHoc(
+                                1,
+                                new NamHoc(1, "2017-2018"),
+                                new KyHoc(1, "hoc ky 1")
+                        ),
+                        new NienKhoaNganh(1,
+                                new Nganh(1, "cong nghe thong tin"),
+                                new NienKhoa(1, "d19")
+                        )
+                )
+        );
+
+        List<LopHocPhan> lopHocPhanList = Arrays.asList(
+
+                new LopHocPhan(1,
+                        null,null,
+                        nienKhoaNganhNamHocKyHocMonHoc,
+                        new PhongHoc(1, "101-a2"),
+                        null,
+                        new GiaoVien(1, "gvbcvt313",null)
+                )
+        );
+
+        when(lopHocPhanRepository.getLopHocPhan(anyInt())).thenReturn(lopHocPhanList);
+        when(kyHocService.getIdKyHocByNameKyHoc(anyString())).thenReturn(ky_hoc_id);
+        when(namHocService.getIdNamHocByName(anyString())).thenReturn(nam_hoc_id);
+        when(nienKhoaService.getIdNienKhoaByName(anyString())).thenReturn(nien_khoa_id);
+        when(nganhService.getIdOfNganhByName(anyString())).thenReturn(nganh_id);
+        when(monHocService.getIdMonHocByName(anyString())).thenReturn(mon_hoc_id);
+        when(nienKhoaNganhRepository.getNienKhoaNganhByNienKhoaAndNganh(anyInt(), anyInt())).thenReturn(nienKhoaNganh);
+        when(nienKhoaNganhNamHocKyHocRepository.
+                getNienKhoaNganhNamHocKyHoc(anyInt(), anyInt())).
+                thenReturn(nienKhoaNganhNamHocKyHoc);
+        when(nienKhoaNganhNamHocKyHocMonHocRepository.getNienKhoaNganhNamHocKyHocMonHoc(anyInt(), anyInt())).thenReturn(nienKhoaNganhNamHocKyHocMonHoc);
+        when(namHocKyHocRepository.getNamHocKyHoc(anyInt(), anyInt())).thenReturn(namHocKyHoc);
+        when(lopHocPhanRepository.getLopHocPhan(anyInt())).thenReturn(lopHocPhanList);
+        mockMvc.perform(get("/api/v1/admin/nam-hocs/2017-2018/ky-hocs/hoc-ky-1/nien-khoas/d19/nganh/cong-nghe-thong-tin/mon-hocs/nhap-mon-cong-nghe-phan-mem-2/lhps"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].nienKhoaNganhNamHocKyHocMonHoc.monHoc.ten", is("nhap mon cong nghe phan mem 2")))
+                .andExpect(jsonPath("$[0].giaoVien.maGiaoVien", is("gvbcvt313")));
+
+    }
 
     @Test
     public void testStandardized() {
