@@ -324,7 +324,10 @@ public class ManagerStudentOfLHPController {
         List<SinhVien> sinhVienList = lopHocPhan.getListKetQua().stream().map(kq -> kq.getSinhVien()).collect(Collectors.toList());
         return ResponseEntity.ok().body(sinhVienList);
     }
-
+    @GetMapping("/sinh-viens")
+    ResponseEntity<List<SinhVien>> getAllSinhVien() {
+        return ResponseEntity.ok().body(sinhVienRepository.findAll());
+    }
     public String standardized(String input) {
         String[] parts = input.split("-");
         return String.join(" ", parts);
