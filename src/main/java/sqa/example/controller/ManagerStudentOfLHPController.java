@@ -12,6 +12,7 @@ import sqa.example.repository.*;
 import sqa.example.service.*;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -216,7 +217,8 @@ public class ManagerStudentOfLHPController {
         return ResponseEntity.ok().body(sinhVienList);
     }
 
-    @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/{nganh-name}/mon-hocs/{mon-hoc-name}/lhps/{lhp-id}/ket-quas")
+    @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/" +
+            "{nganh-name}/mon-hocs/{mon-hoc-name}/lhps/{lhp-id}/ket-quas")
     ResponseEntity<List<KetQua>> getAllKetQuaSinhVienOfLhp(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
                                                            @PathVariable(value = "ky-hocs-name") String ky_hoc_names,
                                                            @PathVariable(value = "nien-khoa-name") String nien_khoa_name,
@@ -230,9 +232,13 @@ public class ManagerStudentOfLHPController {
         }
         LopHocPhan lopHocPhan = lopHocPhanRepository.getById(lhp_id);
         List<KetQua> ketQuaList = lopHocPhan.getListKetQua();
+        for (KetQua ketQua : ketQuaList) {
+            ketQua.setNameSinhVien(ketQua.getSinhVien().getNguoiDung().getName());
+            ketQua.setMaSinhVien(ketQua.getSinhVien().getMaSinhVien());
+        }
         return ResponseEntity.ok().body(ketQuaList);
     }
-
+    @Transactional
     @PostMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/" +
             "{nganh-name}/mon-hocs/{mon-hoc-name}/lhps/{lhp-id}/sinh-viens")
     ResponseEntity<List<SinhVien>> addSinhVienIntoLhp(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
@@ -254,7 +260,8 @@ public class ManagerStudentOfLHPController {
         nienKhoaNganh.setNganh(nganhRepository.save(nganh));
 
         nienKhoaNganh.setNienKhoa(nienKhoaRepository.save(nienKhoa));
-        nienKhoaNganh = nienKhoaNganhRepository.getNienKhoaNganhByNienKhoaIdAndNganhId(nienKhoa.getId(), nganh.getId());
+        nienKhoaNganh = nienKhoaNganhRepository.
+                getNienKhoaNganhByNienKhoaIdAndNganhId(nienKhoa.getId(), nganh.getId());
         if (nienKhoaNganh != null) {
             sinhVien.setNienKhoaNganh(nienKhoaNganh);
         } else {
@@ -273,7 +280,7 @@ public class ManagerStudentOfLHPController {
         List<SinhVien> sinhVienList = lopHocPhan.getListKetQua().stream().map(kq -> kq.getSinhVien()).collect(Collectors.toList());
         return ResponseEntity.ok().body(sinhVienList);
     }
-
+    @Transactional
     @PutMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/" +
             "{nganh-name}/mon-hocs/{mon-hoc-name}/lhps/{lhp-id}/sinh-viens/{sinh-vien-id}")
     ResponseEntity<SinhVien> updateSinhVienIntoLhp(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
@@ -299,7 +306,7 @@ public class ManagerStudentOfLHPController {
         sinhVienOdd = sinhVienRepository.save(sinhVienOdd);
         return ResponseEntity.ok().body(sinhVienOdd);
     }
-
+    @Transactional
     @DeleteMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hocs-name}/nien-khoas/{nien-khoa-name}/nganh/" +
             "{nganh-name}/mon-hocs/{mon-hoc-name}/lhps/{lhp-id}/sinh-viens/{sinh-vien-id}")
     ResponseEntity<List<SinhVien>> deleteSinhVienIntoLhp(@PathVariable(value = "nam-hoc-name") String nam_hoc_name,
