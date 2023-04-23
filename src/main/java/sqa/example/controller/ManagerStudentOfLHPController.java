@@ -5,8 +5,10 @@ import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import sqa.example.model.*;
 import sqa.example.repository.*;
 import sqa.example.service.*;
@@ -252,6 +254,7 @@ public class ManagerStudentOfLHPController {
         if(!checkRole()) {
             return ResponseEntity.notFound().build();
         }
+        sinhVien = sinhVienRepository.findById(sinhVien.getId()).get();
         LopHocPhan lopHocPhan = lopHocPhanRepository.getById(lhp_id);
         List<KetQua> ketQuaList = lopHocPhan.getListKetQua();
         Nganh nganh = sinhVien.getNienKhoaNganh().getNganh();
@@ -273,11 +276,18 @@ public class ManagerStudentOfLHPController {
         sinhVien = sinhVienRepository.save(sinhVien);
         KetQua ketQua = new KetQua();
         ketQua.setSinhVien(sinhVien);
+        boolean isAdd = true;
         KetQua ketQua1 = ketQuaRepository.save(ketQua);
-        ketQuaList.add(ketQua1);
+        for (KetQua ketQua2 : ketQuaList) {
+            if (ketQua2.getSinhVien().getId() == sinhVien.getId()) {
+                isAdd = false;
+            }
+        }
+        if(isAdd == true) ketQuaList.add(ketQua1);
         lopHocPhan.setListKetQua(ketQuaList);
         lopHocPhanRepository.save(lopHocPhan);
-        List<SinhVien> sinhVienList = lopHocPhan.getListKetQua().stream().map(kq -> kq.getSinhVien()).collect(Collectors.toList());
+        List<SinhVien> sinhVienList = (List<SinhVien>) lopHocPhan.getListKetQua().stream().map(kq ->
+                kq.getSinhVien()).collect(Collectors.toList());
         return ResponseEntity.ok().body(sinhVienList);
     }
     @Transactional

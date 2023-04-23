@@ -1,0 +1,223 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 266338304 bytes for G1 virtual space
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_windows.cpp:3557), pid=20280, tid=8836
+#
+# JRE version:  (17.0.6+10) (build )
+# Java VM: OpenJDK 64-Bit Server VM (17.0.6+10-LTS, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -agentlib:jdwp=transport=dt_socket,server=n,suspend=y,address=127.0.0.1:64479 -Dfile.encoding=windows-1252 -Duser.country=US -Duser.language=en -Duser.variant sqa.example.PtitApplication
+
+Host: Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz, 8 cores, 15G,  Windows 11 , 64 bit Build 22621 (10.0.22621.1485)
+Time: Sun Apr 23 16:14:37 2023 SE Asia Standard Time elapsed time: 0.016492 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000024ff307d600):  JavaThread "Unknown thread" [_thread_in_vm, id=8836, stack(0x000000a11b300000,0x000000a11b400000)]
+
+Stack: [0x000000a11b300000,0x000000a11b400000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x67c72a]
+V  [jvm.dll+0x83a2c4]
+V  [jvm.dll+0x83ba6e]
+V  [jvm.dll+0x83c0d3]
+V  [jvm.dll+0x249415]
+V  [jvm.dll+0x679659]
+V  [jvm.dll+0x66dd0a]
+V  [jvm.dll+0x3083eb]
+V  [jvm.dll+0x30f8a6]
+V  [jvm.dll+0x35f9ee]
+V  [jvm.dll+0x35fc1f]
+V  [jvm.dll+0x2df398]
+V  [jvm.dll+0x2e0304]
+V  [jvm.dll+0x80bc11]
+V  [jvm.dll+0x36d7a1]
+V  [jvm.dll+0x7eb07c]
+V  [jvm.dll+0x3efb8f]
+V  [jvm.dll+0x3f16d1]
+C  [jli.dll+0x530b]
+C  [ucrtbase.dll+0x29363]
+C  [KERNEL32.DLL+0x1269d]
+C  [ntdll.dll+0x5a9f8]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007ffe6b7930d8, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+  0x0000024ff30e9020 GCTaskThread "GC Thread#0" [stack: 0x000000a11b400000,0x000000a11b500000] [id=11640]
+  0x0000024ff30f9cf0 ConcurrentGCThread "G1 Main Marker" [stack: 0x000000a11b500000,0x000000a11b600000] [id=17804]
+  0x0000024ff30fadc0 ConcurrentGCThread "G1 Conc#0" [stack: 0x000000a11b600000,0x000000a11b700000] [id=17516]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffe6af4fd57]
+
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x0000024ff30797b0] Heap_lock - owner thread: 0x0000024ff307d600
+
+Heap address: 0x0000000702e00000, size: 4050 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 0.
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0
+
+GC Precious Log:
+<Empty>
+
+Heap:
+ garbage-first heap   total 0K, used 0K [0x0000000702e00000, 0x0000000800000000)
+  region size 2048K, 0 young (0K), 0 survivors (0K)
+
+[error occurred during error reporting (printing heap information), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffe6b335b69]
+
+GC Heap History (0 events):
+No events
+
+Dll operation events (1 events):
+Event: 0.011 Loaded shared library C:\Users\Dell service\.jdks\azul-17.0.6\bin\java.dll
+
+Deoptimization events (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x00007ff61df20000 - 0x00007ff61df2e000 	C:\Users\Dell service\.jdks\azul-17.0.6\bin\java.exe
+0x00007ffece1b0000 - 0x00007ffece3c4000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffecd340000 - 0x00007ffecd402000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ffecb710000 - 0x00007ffecbaac000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ffecb5f0000 - 0x00007ffecb701000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffea4550000 - 0x00007ffea4568000 	C:\Users\Dell service\.jdks\azul-17.0.6\bin\jli.dll
+0x00007ffea2ca0000 - 0x00007ffea2cbb000 	C:\Users\Dell service\.jdks\azul-17.0.6\bin\VCRUNTIME140.dll
+0x00007ffecde70000 - 0x00007ffece01b000 	C:\WINDOWS\System32\USER32.dll
+0x00007ffecbe80000 - 0x00007ffecbea6000 	C:\WINDOWS\System32\win32u.dll
+0x00007ffeb33d0000 - 0x00007ffeb365e000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.22621.608_none_a9444ca7c10bb01d\COMCTL32.dll
+0x00007ffecc660000 - 0x00007ffecc689000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffecd1c0000 - 0x00007ffecd267000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffecbca0000 - 0x00007ffecbdb3000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ffecbf20000 - 0x00007ffecbfba000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ffece120000 - 0x00007ffece151000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ffeae770000 - 0x00007ffeae77c000 	C:\Users\Dell service\.jdks\azul-17.0.6\bin\vcruntime140_1.dll
+0x00007ffe6c5f0000 - 0x00007ffe6c67d000 	C:\Users\Dell service\.jdks\azul-17.0.6\bin\msvcp140.dll
+0x00007ffe6ac60000 - 0x00007ffe6b8c5000 	C:\Users\Dell service\.jdks\azul-17.0.6\bin\server\jvm.dll
+0x00007ffecc5a0000 - 0x00007ffecc64e000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ffecdd30000 - 0x00007ffecddd4000 	C:\WINDOWS\System32\sechost.dll
+0x00007ffecd640000 - 0x00007ffecd757000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ffeae630000 - 0x00007ffeae639000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffec33a0000 - 0x00007ffec33aa000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffec4d00000 - 0x00007ffec4d34000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffecbfc0000 - 0x00007ffecc031000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ffeca6f0000 - 0x00007ffeca708000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ffeadff0000 - 0x00007ffeadffa000 	C:\Users\Dell service\.jdks\azul-17.0.6\bin\jimage.dll
+0x00007ffec8ee0000 - 0x00007ffec910e000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ffecd9a0000 - 0x00007ffecdd29000 	C:\WINDOWS\System32\combase.dll
+0x00007ffecc4c0000 - 0x00007ffecc597000 	C:\WINDOWS\System32\OLEAUT32.dll
+0x00007ffebca40000 - 0x00007ffebca72000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ffecbc20000 - 0x00007ffecbc9b000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ffec46a0000 - 0x00007ffec46db000 	C:\Users\Dell service\.jdks\azul-17.0.6\bin\jdwp.dll
+0x00007ffe9d2b0000 - 0x00007ffe9d2d5000 	C:\Users\Dell service\.jdks\azul-17.0.6\bin\java.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Users\Dell service\.jdks\azul-17.0.6\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.22621.608_none_a9444ca7c10bb01d;C:\Users\Dell service\.jdks\azul-17.0.6\bin\server
+
+VM Arguments:
+jvm_args: -agentlib:jdwp=transport=dt_socket,server=n,suspend=y,address=127.0.0.1:64479 -Dfile.encoding=windows-1252 -Duser.country=US -Duser.language=en -Duser.variant 
+java_command: sqa.example.PtitApplication
+java_class_path (initial): C:\Users\Dell service\Desktop\sqa-quan-ly-diem-ptit\build\classes\java\main;C:\Users\Dell service\Desktop\sqa-quan-ly-diem-ptit\build\resources\main;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-data-jpa\2.7.11-SNAPSHOT\5782d7638ea779fcad749c560e8b9dc58495e3f1\spring-boot-starter-data-jpa-2.7.11-SNAPSHOT.jar;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-web\2.7.11-SNAPSHOT\4e084ae123717f611f76451f31305830cd29c642\spring-boot-starter-web-2.7.11-SNAPSHOT.jar;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\org.projectlombok\lombok\1.18.20\18bcea7d5df4d49227b4a0743a536208ce4825bb\lombok-1.18.20.jar;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\junit\junit\4.13.1\cdd00374f1fee76b11e2a9d127405aa3f6be5b6a\junit-4.13.1.jar;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\com.mysql\mysql-connector-j\8.0.33\9e64d997873abc4318620264703d3fdb6b02dd5a\mysql-connector-j-8.0.33.jar;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\org.flywaydb\flyway-mysql\8.5.13\c19e9c61ccb820e6384ed992f5a5c82a3469a9f4\flyway-mysql-8.5.13.jar;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\org.flywaydb\flyway-core\9.8.1\54097ec300aeef620881849104fea87504116514\flyway-core-9.8.1.jar;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-aop\2.7.11-SNAPSHOT\902bb4aefcb9bbe3f9bc022aaa7aac5d0ad91f86\spring-boot-starter-aop-2.7.11-SNAPSHOT.jar;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-jdbc\2.7.11-SNAPSHOT\bf7dd744a0d962a05d3626430ec855b7bc2836d6\spring-boot-starter-jdbc-2.7.11-SNAPSHOT.jar;C:\Users\Dell service\.gradle\caches\modules-2\files-2.1\jakarta.transaction\jakarta.transaction-api\1.3.3\c4179d48720a1e87202115fbed6089bdc4195405\jakarta.transaction-api-1.3.3.jar;C:\Users\Dell service\.gradle\caches\modules-2\f
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 4                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 2                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 8                                         {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 2097152                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 266338304                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 4246732800                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 2097152                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 5839372                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122909434                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122909434                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 4246732800                             {manageable} {ergonomic}
+     bool UseCompressedClassPointers               = true                           {product lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags
+ #1: stderr all=off uptime,level,tags
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_202
+PATH=C:\Program Files\ImageMagick-7.1.0-Q16-HDRI;C:\Program Files (x86)\VMware\VMware Player\bin\;C:\Python39\Scripts\;C:\Python39\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Program Files\MinGW\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Users\Dell service\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\PostgreSQL\15\bin;C:\Program Files\Redis\;D:\platform-tools_r29.0.5-windows\platform-tools;C:\Program Files\maven\apache-maven-3.9.1\bin;;C:\Program Files\Docker\Docker\resources\bin;C:\minikube;C:\Anacoda;C:\Anacoda\Library\mingw-w64\bin;C:\Anacoda\Library\usr\bin;C:\Anacoda\Library\bin;C:\Anacoda\Scripts;C:\Program Files\JetBrains\PyCharm Community Edition 2022.2.1\bin;;C:\Users\Dell service\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1.3\bin;;D:\IntelliJ IDEA 2023.1\bin;;C:\Program Files\JetBrains\CLion 2021.3.4\bin;;C:\Program Files\Azure Data Studio\bin;C:\Program Files\heroku\bin;C:\Users\Dell service\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Dell service\AppData\Roaming\npm;D:\WebStorm 2023.1\bin;;C:\Users\Dell service\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7\bin;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7\libnvvp;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7\extras\CUPTI\lib64;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7\include;
+USERNAME=Dell service
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 142 Stepping 12, GenuineIntel
+TMP=C:\Users\DELLSE~1\AppData\Local\Temp
+TEMP=C:\Users\DELLSE~1\AppData\Local\Temp
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 11 , 64 bit Build 22621 (10.0.22621.1485)
+OS uptime: 5 days 8:48 hours
+Hyper-V role detected
+
+CPU: total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 142 stepping 12 microcode 0xf0, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, fma, vzeroupper, clflush, clflushopt, hv
+
+Memory: 4k page, system-wide physical 16198M (2875M free)
+TotalPageFile size 28698M (AvailPageFile size 31M)
+current process WorkingSet (physical memory assigned to process): 11M, peak: 11M
+current process commit charge ("private bytes"): 60M, peak: 314M
+
+vm_info: OpenJDK 64-Bit Server VM (17.0.6+10-LTS) for windows-amd64 JRE (17.0.6+10-LTS) (Zulu17.40+19-CA), built on Jan  4 2023 14:58:55 by "zulu_re" with MS VC++ 16.10 / 16.11 (VS2019)
+
+END.
