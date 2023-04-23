@@ -21,8 +21,6 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/api/v1/cau-hinh-mon-hoc")
 @CrossOrigin
 public class MonHocConfigurationController {
-    @Autowired
-    HttpSession session;
     private final NganhService nganhService;
     private final NienKhoaNganhService nienKhoaNganhService;
     private final NienKhoaNganhNamHocKyHocService nienKhoaNganhNamHocKyHocService;
@@ -30,8 +28,8 @@ public class MonHocConfigurationController {
     private final MonHocService monHocService;
 
     @GetMapping("/nganhs")
-    public ResponseEntity<List<Nganh>> getAllNganh() {
-        if(!checkRole()) {
+    public ResponseEntity<List<Nganh>> getAllNganh(HttpSession session) {
+        if(!checkRole(session)) {
             return ResponseEntity.notFound().build();
         }
         var result = nganhService.findAll();
@@ -40,9 +38,9 @@ public class MonHocConfigurationController {
 
     @GetMapping("/nganhs/{nganhId}/mon-hocs")
     public ResponseEntity<List<MonHoc>> getAllMonHocByNganh(
-            @PathVariable("nganhId") Integer nganhId) {
+            @PathVariable("nganhId") Integer nganhId, HttpSession session) {
 
-        if(!checkRole()) {
+        if(!checkRole(session)) {
             return ResponseEntity.notFound().build();
         }
         var listNienKhoaNganh = nienKhoaNganhService.findAllByNganhId(nganhId);
@@ -68,8 +66,8 @@ public class MonHocConfigurationController {
     @GetMapping("/nganhs/{nganhId}/mon-hocs/{monHocId}")
     public ResponseEntity<MonHoc> getMonHoc(
             @PathVariable("nganhId") Integer nganhId,
-            @PathVariable("monHocId") Integer monHocId) {
-        if(!checkRole()) {
+            @PathVariable("monHocId") Integer monHocId, HttpSession session) {
+        if(!checkRole(session)) {
             return ResponseEntity.notFound().build();
         }
         var result = monHocService.findById(monHocId);
@@ -77,15 +75,15 @@ public class MonHocConfigurationController {
     }
 
     @PutMapping("/nganhs/{nganhId}/mon-hocs")
-    public ResponseEntity<MonHoc> updateMonHoc(@RequestBody MonHoc monHoc) {
-        if(!checkRole()) {
+    public ResponseEntity<MonHoc> updateMonHoc(@RequestBody MonHoc monHoc, HttpSession session) {
+        if(!checkRole(session)) {
             return ResponseEntity.notFound().build();
         }
         var result = monHocService.update(monHoc);
         return new ResponseEntity(result, result != null ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
-    public boolean checkRole() {
+    public boolean checkRole(HttpSession session) {
         GiaoVien giaoVien = (GiaoVien) session.getAttribute("GiaoVien");
         if(giaoVien == null) return true;
         return true;

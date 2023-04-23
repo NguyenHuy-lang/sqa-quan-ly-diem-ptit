@@ -14,6 +14,7 @@ import sqa.example.service.KyHocService;
 import sqa.example.service.MonHocService;
 import sqa.example.service.NamHocService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,8 +25,6 @@ import java.util.stream.Collectors;
 @Log4j2
 @CrossOrigin
 public class StudentOfGradesController {
-    @Autowired
-    HttpSession session;
     private final NamHocRepository namHocRepository;
     private final NguoiDungRepository nguoiDungRepository;
     private final NamHocService namHocService;
@@ -40,27 +39,31 @@ public class StudentOfGradesController {
     private final ThangDiemRepository thangDiemRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentOfGradesController.class);
-    @GetMapping("nam-hocs")
-    public ResponseEntity<List<NamHoc>> getAllNamhoc() {
-        if(!checkRole()) {
+    @GetMapping("{sinh-vien-id}/nam-hocs")
+    public ResponseEntity<List<NamHoc>> getAllNamhoc(HttpSession session) {
+        if(!checkRole(session)) {
             return ResponseEntity.notFound().build();
         }
         LOGGER.info("GET ALL NAM HOC");
         return ResponseEntity.ok(namHocRepository.findAll());
     }
-    @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs")
-    public ResponseEntity<List<NamHocKyHoc>> getAllKyHocOfNamHoc(@PathVariable(value = "nam-hoc-name") String nam_hoc_name) {
-        if(!checkRole()) {
+    @GetMapping("{sinh-vien-id}/nam-hocs/{nam-hoc-name}/ky-hocs")
+    public ResponseEntity<List<NamHocKyHoc>> getAllKyHocOfNamHoc(
+            @PathVariable(value = "nam-hoc-name") String nam_hoc_name, HttpSession session) {
+        if(!checkRole(session)) {
             return ResponseEntity.notFound().build();
         }
         LOGGER.info("GET ALL KY HOC OF NAM HOC");
         Integer nam_hoc_id = namHocService.getIdNamHocByName((nam_hoc_name));
         return ResponseEntity.ok(namHocKyHocRepository.getNamHocKyHoc(nam_hoc_id));
     }
-    @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hoc-name}/mon-hoc")
-    public ResponseEntity<List<MonHoc>> getAllMonHocOfKyHoc(@PathVariable("nam-hoc-name") String nam_hoc_name,
-                                                            @PathVariable("ky-hoc-name") String ky_hoc_name) {
-        if(!checkRole()) {
+    @GetMapping("{sinh-vien-id}/nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hoc-name}/mon-hoc")
+    public ResponseEntity<List<MonHoc>> getAllMonHocOfKyHoc(
+            @PathVariable("sinh-vien-id") Integer sinhVienId,
+            @PathVariable("nam-hoc-name") String nam_hoc_name,
+            @PathVariable("ky-hoc-name") String ky_hoc_name,
+            HttpSession session) {
+        if(!checkRole(session)) {
             return ResponseEntity.notFound().build();
         }
         Integer nam_hoc_id = namHocService.getIdNamHocByName((nam_hoc_name));
@@ -69,24 +72,26 @@ public class StudentOfGradesController {
 
         List<NienKhoaNganhNamHocKyHocMonHoc> nienKhoaNganhNamHocKyHocMonHocList
 
-                = getNienKhoaNganhNamHocKyHocMonHoc(nam_hoc_id, ky_hoc_id);
+                = getNienKhoaNganhNamHocKyHocMonHoc(nam_hoc_id, ky_hoc_id, sinhVienId);
         List<MonHoc> monHocList = nienKhoaNganhNamHocKyHocMonHocList.stream().
                 map(v -> v.getMonHoc()).collect(Collectors.toList());
         return ResponseEntity.ok().body(monHocList);
     }
-    @GetMapping("nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hoc-name}/mon-hoc/{mon-hoc-name}/ket-quas")
-    public ResponseEntity<KetQua> getKetQuaOfMonHoc(@PathVariable("nam-hoc-name") String nam_hoc_name,
+    @GetMapping("{sinh-vien-id}/nam-hocs/{nam-hoc-name}/ky-hocs/{ky-hoc-name}/mon-hoc/{mon-hoc-name}/ket-quas")
+    public ResponseEntity<KetQua> getKetQuaOfMonHoc(@PathVariable("sinh-vien-id") Integer sinhVienId,
+                                                    @PathVariable("nam-hoc-name") String nam_hoc_name,
                                                     @PathVariable("ky-hoc-name") String ky_hoc_name,
-                                                    @PathVariable("mon-hoc-name") String mon_hoc_name
+                                                    @PathVariable("mon-hoc-name") String mon_hoc_name,
+                                                    HttpSession session
     ) {
-        if(!checkRole()) {
+        if(!checkRole(session)) {
             return ResponseEntity.notFound().build();
         }
         Integer nam_hoc_id = namHocService.getIdNamHocByName((nam_hoc_name));
         Integer ky_hoc_id = kyHocService.getIdKyHocByNameKyHoc(standardized(ky_hoc_name));
         Integer mon_hoc_id = monHocService.getIdMonHocByName(standardized(mon_hoc_name));
 
-        Integer id = getUserId();
+        Integer id = sinhVienId;
 
         SinhVien sinhVien = sinhVienRepository.getById(id);
         NienKhoaNganh nienKhoaNganh = sinhVien.getNienKhoaNganh();
@@ -106,7 +111,7 @@ public class StudentOfGradesController {
         for(LopHocPhan lopHocPhan : lopHocPhanList) {
             System.out.println(lopHocPhan);
             System.out.println(lopHocPhan.getListKetQua());
-            KetQua ketQua = ketQuaRepository.getKetQuaOfSinhVien(getUserId(), lopHocPhan.getId());
+            KetQua ketQua = ketQuaRepository.getKetQuaOfSinhVien(id, lopHocPhan.getId());
             MonHoc monHoc = lopHocPhan.getNienKhoaNganhNamHocKyHocMonHoc().getMonHoc();
             setKetQua(ketQua, monHoc);
             if (ketQua != null) {
@@ -118,24 +123,11 @@ public class StudentOfGradesController {
         return ResponseEntity.notFound().build();
 
     }
-
-    public Integer getUserId() {
-
-        if(session.getAttribute("sinhVien") != null) {
-            SinhVien sinhVien =  (SinhVien) session.getAttribute("sinhVien");
-            return sinhVien.getNguoiDung().getId();
-        } else if(session.getAttribute("giaoVien") != null ) {
-            GiaoVien giaoVien = (GiaoVien) session.getAttribute("giaoVien");
-            return giaoVien.getNguoiDung().getId();
-        }
-        return 3;
-    }
     public List<NienKhoaNganhNamHocKyHocMonHoc> getNienKhoaNganhNamHocKyHocMonHoc(Integer nam_hoc_id,
-                                                                                  Integer ky_hoc_id) {
-        if(!checkRole()) {
-            return (List<NienKhoaNganhNamHocKyHocMonHoc>) ResponseEntity.notFound().build();
-        }
-        Integer id = getUserId();
+                                                                                  Integer ky_hoc_id,
+                                                                                  Integer sinhVienId) {
+
+        Integer id = sinhVienId;
         SinhVien sinhVien = sinhVienRepository.getById(id);
         NienKhoaNganh nienKhoaNganh = sinhVien.getNienKhoaNganh();
         Integer nien_khoa_nganh_id = nienKhoaNganh.getId();
@@ -147,7 +139,8 @@ public class StudentOfGradesController {
                 nienKhoaNganhNamHocKyHocRepository
                         .getNienKhoaNganhNamHocKyHoc(nam_hoc_ky_hoc_id, nien_khoa_nganh_id);
         Integer nien_khoa_nganh_nam_hoc_ky_hoc_id = nienKhoaNganhNamHocKyHoc.getId();
-        List<NienKhoaNganhNamHocKyHocMonHoc> nienKhoaNganhNamHocKyHocMonHocList = nienKhoaNganhNamHocKyHocMonHocRepository
+        List<NienKhoaNganhNamHocKyHocMonHoc> nienKhoaNganhNamHocKyHocMonHocList =
+                nienKhoaNganhNamHocKyHocMonHocRepository
                 .getNienKhoaNganhNamHocKyHocMonHoc(nien_khoa_nganh_nam_hoc_ky_hoc_id);
         return nienKhoaNganhNamHocKyHocMonHocList;
     }
@@ -177,7 +170,7 @@ public class StudentOfGradesController {
         return String.join(" ", parts);
     }
 
-    public boolean checkRole() {
+    public boolean checkRole(HttpSession session) {
         SinhVien sinhVien = (SinhVien) session.getAttribute("SinhVien");
         if(sinhVien == null) return true;
         return true;

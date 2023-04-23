@@ -10,14 +10,14 @@ import sqa.example.repository.GiaoVienRepository;
 import sqa.example.repository.NguoiDungRepository;
 import sqa.example.repository.SinhVienRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("api/v1/login")
 @CrossOrigin
 public class LoginController {
-    @Autowired
-    HttpSession session;
+
     @Autowired
     private NguoiDungRepository nguoiDungRepository;
     @Autowired
@@ -25,11 +25,10 @@ public class LoginController {
     @Autowired
     private GiaoVienRepository giaoVienRepository;
     @PostMapping
-    ResponseEntity<Object> checkLogin(@RequestBody NguoiDung nguoiDung) {
+    ResponseEntity<Object> checkLogin(@RequestBody NguoiDung nguoiDung, HttpSession session) {
         nguoiDung = nguoiDungRepository.checkLogin(nguoiDung.getEmail(), nguoiDung.getSoDienThoai());
         SinhVien sinhVien = sinhVienRepository.getSinhVienByNguoiDungId(nguoiDung.getId());
         GiaoVien giaoVien = giaoVienRepository.getGiaoVienByNguoiDungId(nguoiDung.getId());
-
         if (sinhVien != null) {
             session.setAttribute("sinhVien", sinhVien);
             return ResponseEntity.ok(sinhVien);
