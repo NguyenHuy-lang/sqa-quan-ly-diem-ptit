@@ -48,7 +48,7 @@ public class ThangDiemService {
         return true;
     }
 
-    public boolean isInvalid(ThangDiem entity) {
+    public static boolean isInvalid(ThangDiem entity) {
         boolean invalid = entity.getFrom() < 0.0 || entity.getTo() < 0.0;
         invalid |= entity.getFrom() > entity.getTo();
         invalid |= entity.getDiemHe4() < 0.0;

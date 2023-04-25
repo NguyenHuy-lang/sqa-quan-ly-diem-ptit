@@ -50,7 +50,7 @@ public class MonHocService {
         return true;
     }
 
-    private boolean isInvalid(MonHoc entity) {
+    static boolean isInvalid(MonHoc entity) {
         boolean isInvalid = false;
         isInvalid |= entity.getTyLeDiemCC() < 0 || entity.getTyLeDiemTH() < 0
                 || entity.getTyLeDiemKT() < 0 || entity.getTyLeDiemBT() < 0 || entity.getTyLeDiemCuoiKy() < 0;
