@@ -1,0 +1,4 @@
+CREATE TABLE tbl_nganh(
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    ten VARCHAR(150)
+);
